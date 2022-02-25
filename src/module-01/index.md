@@ -83,4 +83,5 @@ cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
 
 1. 时序数据和时序数据的关系是什么？
 2. 写出一条符合CnosDB格式的数据
-3. 查询xxx的xxx
+3. 查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间在santa_monica水位最高的一条数据
+4. 查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间coyote_creek每天的平均水温是多少

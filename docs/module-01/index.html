@@ -160,6 +160,7 @@
 <li>除了存储查询外，还需要实时的计算操作</li>
 <li>数据量巨大，每天很容易就会过百亿</li>
 </ul>
+<p><strong>时序数据库</strong> - 用于处理带时间标签（按照时间的顺序变化，即时间序列化）的数据</p>
 <h2 id="快速开始"><a class="header" href="#快速开始">快速开始</a></h2>
 <h3 id="使用docker启动"><a class="header" href="#使用docker启动">使用Docker启动</a></h3>
 <pre><code class="language-bash">docker pull cnosdb/cnosdb:latest
@@ -217,8 +218,9 @@ cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
 <h2 id="课堂问题"><a class="header" href="#课堂问题">课堂问题</a></h2>
 <ol>
 <li>时序数据和时序数据的关系是什么？</li>
-<li>请写出一条符合CnosDB的数据</li>
-<li>查询xxx的xxx</li>
+<li>写出一条符合CnosDB格式的数据</li>
+<li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间在santa_monica水位最高的一条数据</li>
+<li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间coyote_creek每天的平均水温是多少</li>
 </ol>
 
                     </main>
