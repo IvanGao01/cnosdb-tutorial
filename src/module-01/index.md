@@ -51,6 +51,12 @@ wget https://gist.githubusercontent.com/cnos-db/d6dad9766870a1ef50209e73d178e4d0
 
 cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
 
+cnosdb-cli
+
+SHOW DATABASES
+
+USE NOAA_water_database
+
 ```
 
 ## CnosQL vs SQL
@@ -69,14 +75,47 @@ cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
 
 ## 查询入门
 
+### 查看所有 `measurements`
 
-  - SELECT statement
+    show measurements
 
-  - FROM, WHERE, INTO, 和 GROUP BY clauses
+### 计算`h2o_feet`中`water_levle`的数量
 
-  - CnosQL function
+    SELECT COUNT("water_level") FROM h2o_feet
 
-  - Subqueies
+
+### 查看`h2o_feet`中的前五个值
+
+    SELECT * FROM h2o_feet LIMIT 5
+
+### 指定字段的标识符号
+
+    SELECT "level description"::field,"location"::tag,"water_level"::field FROM "h2o_feet" limit 10
+
+### 查看`measurement`的tag key
+
+    SHOW TAG KEYS FROM h2o_feet
+
+### 查看tag value
+
+    SHOW TAG VALUES FROM h2o_feet WITH KEY = "location"
+
+### 查看field key
+
+    SHOW FIELD KEYS FROM h2o_feet
+
+### 查看field value
+    
+    SHOW SELECT FROM h2o_feet WITH KEY = "water_level"
+
+### 查看series
+
+    SHOW SERIES
+
+### 函数使用
+> [更多](https://www.cnosdb.com/content/cnosdb/0.9/cnosql/function.html)
+
+    SELECT MEAN("water_level") FROM "h2o_feet"
 
 
 ## 课堂问题

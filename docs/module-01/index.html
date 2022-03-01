@@ -178,6 +178,12 @@ wget https://gist.githubusercontent.com/cnos-db/d6dad9766870a1ef50209e73d178e4d0
 
 cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
 
+cnosdb-cli
+
+SHOW DATABASES
+
+USE NOAA_water_database
+
 </code></pre>
 <h2 id="cnosql-vs-sql"><a class="header" href="#cnosql-vs-sql">CnosQL vs SQL</a></h2>
 <ul>
@@ -201,20 +207,39 @@ cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
 </li>
 </ul>
 <h2 id="查询入门"><a class="header" href="#查询入门">查询入门</a></h2>
-<ul>
-<li>
-<p>SELECT statement</p>
-</li>
-<li>
-<p>FROM, WHERE, INTO, 和 GROUP BY clauses</p>
-</li>
-<li>
-<p>CnosQL function</p>
-</li>
-<li>
-<p>Subqueies</p>
-</li>
-</ul>
+<h3 id="查看所有-measurements"><a class="header" href="#查看所有-measurements">查看所有 <code>measurements</code></a></h3>
+<pre><code>show measurements
+</code></pre>
+<h3 id="计算h2o_feet中water_levle的数量"><a class="header" href="#计算h2o_feet中water_levle的数量">计算<code>h2o_feet</code>中<code>water_levle</code>的数量</a></h3>
+<pre><code>SELECT COUNT(&quot;water_level&quot;) FROM h2o_feet
+</code></pre>
+<h3 id="查看h2o_feet中的前五个值"><a class="header" href="#查看h2o_feet中的前五个值">查看<code>h2o_feet</code>中的前五个值</a></h3>
+<pre><code>SELECT * FROM h2o_feet LIMIT 5
+</code></pre>
+<h3 id="指定字段的标识符号"><a class="header" href="#指定字段的标识符号">指定字段的标识符号</a></h3>
+<pre><code>SELECT &quot;level description&quot;::field,&quot;location&quot;::tag,&quot;water_level&quot;::field FROM &quot;h2o_feet&quot; limit 10
+</code></pre>
+<h3 id="查看measurement的tag-key"><a class="header" href="#查看measurement的tag-key">查看<code>measurement</code>的tag key</a></h3>
+<pre><code>SHOW TAG KEYS FROM h2o_feet
+</code></pre>
+<h3 id="查看tag-value"><a class="header" href="#查看tag-value">查看tag value</a></h3>
+<pre><code>SHOW TAG VALUES FROM h2o_feet WITH KEY = &quot;location&quot;
+</code></pre>
+<h3 id="查看field-key"><a class="header" href="#查看field-key">查看field key</a></h3>
+<pre><code>SHOW FIELD KEYS FROM h2o_feet
+</code></pre>
+<h3 id="查看field-value"><a class="header" href="#查看field-value">查看field value</a></h3>
+<pre><code>SHOW SELECT FROM h2o_feet WITH KEY = &quot;water_level&quot;
+</code></pre>
+<h3 id="查看series"><a class="header" href="#查看series">查看series</a></h3>
+<pre><code>SHOW SERIES
+</code></pre>
+<h3 id="函数使用"><a class="header" href="#函数使用">函数使用</a></h3>
+<blockquote>
+<p><a href="https://www.cnosdb.com/content/cnosdb/0.9/cnosql/function.html">更多</a></p>
+</blockquote>
+<pre><code>SELECT MEAN(&quot;water_level&quot;) FROM &quot;h2o_feet&quot;
+</code></pre>
 <h2 id="课堂问题"><a class="header" href="#课堂问题">课堂问题</a></h2>
 <ol>
 <li>时序数据和时序数据的关系是什么？</li>
