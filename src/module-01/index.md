@@ -104,10 +104,6 @@ USE NOAA_water_database
 
     SHOW FIELD KEYS FROM h2o_feet
 
-### 查看field value
-    
-    SHOW SELECT FROM h2o_feet WITH KEY = "water_level"
-
 ### 查看series
 
     SHOW SERIES
