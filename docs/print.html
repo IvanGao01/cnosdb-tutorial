@@ -151,6 +151,7 @@
 <p><a href="https://www.cnosdb.com">场景</a></p>
 <p><a href="https://weathernew.pae.baidu.com/weathernew/pc?query=%E5%8C%97%E4%BA%AC%E5%A4%A9%E6%B0%94&amp;srcid=4982">天气</a></p>
 <h2 id="cnosdb简介"><a class="header" href="#cnosdb简介">CnosDB简介</a></h2>
+<p><strong>时序数据库</strong> - 用于处理带时间标签（按照时间的顺序变化，即时间序列化）的数据</p>
 <p><strong>时序数据管理系统</strong> - 主要通过对时序数据的采集、处理和分析帮助企业实时监控企业的生产与经营过程。</p>
 <ul>
 <li>数据是时序的，一定带有时间戳</li>
@@ -161,7 +162,6 @@
 <li>除了存储查询外，还需要实时的计算操作</li>
 <li>数据量巨大，每天很容易就会过百亿</li>
 </ul>
-<p><strong>时序数据库</strong> - 用于处理带时间标签（按照时间的顺序变化，即时间序列化）的数据</p>
 <h2 id="快速开始"><a class="header" href="#快速开始">快速开始</a></h2>
 <h3 id="使用docker启动"><a class="header" href="#使用docker启动">使用Docker启动</a></h3>
 <pre><code class="language-bash">docker pull cnosdb/cnosdb:latest
@@ -173,6 +173,8 @@ docker run -itd -p 8086:8086 cnosdb/cnosdb:latest
 <p>请下载<code>wget</code>工具: <code>apt-get update &amp;&amp; apt-get install wget</code></p>
 </blockquote>
 <pre><code class="language-bash">
+docker ps # 查看运行中的容器
+
 docker exec -it container_id bash # 进入容器
 
 wget https://gist.githubusercontent.com/cnos-db/d6dad9766870a1ef50209e73d178e4d0/raw/a2ac4e57a43f68f9f2d5cacb0af15e45e8c5d4e6/NOAA_data.txt
@@ -240,7 +242,7 @@ USE NOAA_water_database
 </code></pre>
 <h2 id="课堂问题"><a class="header" href="#课堂问题">课堂问题</a></h2>
 <ol>
-<li>时序数据和时序数据的关系是什么？</li>
+<li>时序数据和时序数据库的关系是什么？</li>
 <li>写出一条符合CnosDB格式的数据</li>
 <li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间在santa_monica水位最高的一条数据</li>
 <li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间coyote_creek每天的平均水温是多少</li>
