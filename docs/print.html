@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">1.</strong> CnosDB入门</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">1.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">2.</strong> CnosDB架构</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -246,6 +246,27 @@ USE NOAA_water_database
 <li>写出一条符合CnosDB格式的数据</li>
 <li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间在santa_monica水位最高的一条数据</li>
 <li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间coyote_creek每天的平均水温是多少</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cnosdb-数据库管理"><a class="header" href="#cnosdb-数据库管理">CnosDB 数据库管理</a></h1>
+<blockquote>
+<p>摘要</p>
+</blockquote>
+<ol>
+<li>数据库管理 
+<pre><code>CREATE DATABASE
+DROP DATABASE
+DROP SERIES
+DELETE
+DROP MEASUREMENT
+DROP SHARD 
+</code></pre>
+</li>
+<li>保留策略管理
+<pre><code>CREATE RETENTION POLICY
+ALTER RETENTION POLICY
+DROP RETENTION POLICY`
+</code></pre>
+</li>
 </ol>
 
                     </main>
