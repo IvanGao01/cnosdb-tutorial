@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">1.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">2.</strong> CnosDB架构</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">1.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">2.</strong> CnosDB数据库管理</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -250,24 +250,61 @@ USE NOAA_water_database
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cnosdb-数据库管理"><a class="header" href="#cnosdb-数据库管理">CnosDB 数据库管理</a></h1>
 <blockquote>
 <p>摘要</p>
+<h4 id="数据库管理"><a class="header" href="#数据库管理"><a href="module-02/index.html#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86">数据库管理</a></a></h4>
+<ul>
+<li><a href="module-02/index.html#create-database">CREATE DATABASE</a></li>
+<li><a href="module-02/index.html#drop-database">DROP DATABASE</a></li>
+<li><a href="module-02/index.html#drop-series">DROP SERIES</a></li>
+<li><a href="module-02/index.html#delete">DELETE</a></li>
+<li><a href="module-02/index.html#drop-measurement">DROP MEASUREMENT</a></li>
+<li><a href="module-02/index.html#drop-shard">DROP SHARD</a></li>
+</ul>
+<h4 id="保留策略管理"><a class="header" href="#保留策略管理"><a href="module-02/%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5%E7%AE%A1%E7%90%86">保留策略管理</a></a></h4>
+<ul>
+<li><a href="module-02/index.html#create-retention-policy">CREATE RETENTION POLICY</a></li>
+<li><a href="module-02/index.html#alter-retention-policy">ALTER RETENTION POLICY</a></li>
+<li><a href="module-02/index.html#drop-retention-policy">DROP RETENTION POLICY</a></li>
+</ul>
 </blockquote>
-<ol>
-<li>数据库管理 
-<pre><code>CREATE DATABASE
-DROP DATABASE
-DROP SERIES
-DELETE
-DROP MEASUREMENT
-DROP SHARD 
+<h2 id="数据库管理-1"><a class="header" href="#数据库管理-1">数据库管理</a></h2>
+<h3 id="create-database"><a class="header" href="#create-database">CREATE DATABASE</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">CREATE DATABASE &lt;database_name&gt; [WITH [DURATION &lt;duration&gt;] [REPLICATION &lt;n&gt;] [SHARD DURATION &lt;duration&gt;] [NAME &lt;rp-name&gt;]]
 </code></pre>
-</li>
-<li>保留策略管理
-<pre><code>CREATE RETENTION POLICY
-ALTER RETENTION POLICY
-DROP RETENTION POLICY`
+<h3 id="drop-database"><a class="header" href="#drop-database">DROP DATABASE</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP DATABASE &lt;database_name&gt;
 </code></pre>
-</li>
-</ol>
+<h3 id="drop-series"><a class="header" href="#drop-series">DROP SERIES</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP SERIES FROM &lt;measurement_name[,measurement_name]&gt; WHERE &lt;tag_key&gt;='&lt;tag_value&gt;'
+</code></pre>
+<h3 id="delete"><a class="header" href="#delete">DELETE</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DELETE FROM &lt;measurement_name&gt; WHERE [&lt;tag_key&gt;='&lt;tag_value&gt;'] | [&lt;time interval&gt;]
+</code></pre>
+<h3 id="drop-measurement"><a class="header" href="#drop-measurement">DROP MEASUREMENT</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP MEASUREMENT &lt;measurement_name&gt;
+</code></pre>
+<h3 id="drop-shard"><a class="header" href="#drop-shard">DROP SHARD</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP SHARD &lt;shard_id_number&gt;
+</code></pre>
+<h2 id="保留策略管理-1"><a class="header" href="#保留策略管理-1">保留策略管理</a></h2>
+<h3 id="create-retention-policy"><a class="header" href="#create-retention-policy">CREATE RETENTION POLICY</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">CREATE RETENTION POLICY &lt;rp_name&gt; ON &lt;database_name&gt; DURATION &lt;duration&gt; REPLICATION &lt;n&gt; [SHARD DURATION &lt;duration&gt;] [DEFAULT]
+</code></pre>
+<h3 id="alter-retention-policy"><a class="header" href="#alter-retention-policy">ALTER RETENTION POLICY</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">ALTER RETENTION POLICY &lt;rp_name&gt; ON &lt;database_name&gt; DURATION &lt;duration&gt; REPLICATION &lt;n&gt; SHARD DURATION &lt;duration&gt; DEFAULT
+</code></pre>
+<h3 id="drop-retention-policy"><a class="header" href="#drop-retention-policy">DROP RETENTION POLICY</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP RETENTION POLICY &lt;rp_name&gt; ON &lt;database_name&gt;
+
+</code></pre>
 
                     </main>
 
