@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>CnosDB入门 - CnosDB Tutorial</title>
+        <title>数据的增删改查 - CnosDB Tutorial</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../module-01/index.html" class="active"><strong aria-hidden="true">1.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="../module-02/index.html"><strong aria-hidden="true">2.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="../module-03/index.html"><strong aria-hidden="true">3.</strong> 数据的增删改查</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../module-01/index.html"><strong aria-hidden="true">1.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="../module-02/index.html"><strong aria-hidden="true">2.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="../module-03/index.html" class="active"><strong aria-hidden="true">3.</strong> 数据的增删改查</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,125 +134,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="cnosdb入门"><a class="header" href="#cnosdb入门">CnosDB入门</a></h1>
-<blockquote>
-<p>摘要</p>
-</blockquote>
+                        <h1 id="数据的增删改查"><a class="header" href="#数据的增删改查">数据的增删改查</a></h1>
+<h2 id="摘要"><a class="header" href="#摘要">摘要</a></h2>
 <ul>
-<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE">什么是时序数据？</a></li>
-<li><a href="#cnosdb%E7%AE%80%E4%BB%8B">CnosDB简介</a></li>
-<li><a href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">快速开始</a></li>
-<li><a href="#cnosql-vs-sql">CnosQL VS SQL</a></li>
-<li><a href="#%E6%9F%A5%E8%AF%A2%E5%85%A5%E9%97%A8">查询入门</a></li>
+<li>理解<code>curl</code>命令</li>
+<li>通过Http API Endpoint写入和查询数据</li>
+<li>使用Go Client写入和查询数据</li>
 </ul>
-<h2 id="什么是时序数据"><a class="header" href="#什么是时序数据">什么是时序数据？</a></h2>
-<p>时序数据是指时间序列数据。是按<strong>时间顺序</strong>记录的数据列，在同一数据列中的各个数据必须是同口径的，要求具有可比性。</p>
-<p><a href="https://www.cnosdb.com">场景</a></p>
-<p><a href="https://weathernew.pae.baidu.com/weathernew/pc?query=%E5%8C%97%E4%BA%AC%E5%A4%A9%E6%B0%94&amp;srcid=4982">天气</a></p>
-<h2 id="cnosdb简介"><a class="header" href="#cnosdb简介">CnosDB简介</a></h2>
-<p><strong>时序数据库</strong> - 用于处理带时间标签（按照时间的顺序变化，即时间序列化）的数据</p>
-<p><strong>时序数据管理系统</strong> - 主要通过对时序数据的采集、处理和分析帮助企业实时监控企业的生产与经营过程。</p>
-<ul>
-<li>数据是时序的，一定带有时间戳</li>
-<li>数据极少有更新操作</li>
-<li>数据的写入多，读取少</li>
-<li>用户关注的是一段时间的趋势</li>
-<li>数据是有保留期限的</li>
-<li>除了存储查询外，还需要实时的计算操作</li>
-<li>数据量巨大，每天很容易就会过百亿</li>
-</ul>
-<h2 id="快速开始"><a class="header" href="#快速开始">快速开始</a></h2>
-<h3 id="使用docker启动"><a class="header" href="#使用docker启动">使用Docker启动</a></h3>
-<pre><code class="language-bash">docker pull cnosdb/cnosdb:latest
-docker run -itd -p 8086:8086 cnosdb/cnosdb:latest
-</code></pre>
-<h3 id="导入示例数据"><a class="header" href="#导入示例数据">导入示例数据</a></h3>
-<blockquote>
-<p>如何提示<code>bash: wget: command not found</code></p>
-<p>请下载<code>wget</code>工具: <code>apt-get update &amp;&amp; apt-get install wget</code></p>
-</blockquote>
-<pre><code class="language-bash">
-docker ps # 查看运行中的容器
-
-docker exec -it container_id bash # 进入容器
-
-wget https://gist.githubusercontent.com/cnos-db/d6dad9766870a1ef50209e73d178e4d0/raw/a2ac4e57a43f68f9f2d5cacb0af15e45e8c5d4e6/NOAA_data.txt
-
-cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
-
-cnosdb-cli
-
-SHOW DATABASES
-
-USE NOAA_water_database
-
-</code></pre>
-<h2 id="cnosql-vs-sql"><a class="header" href="#cnosql-vs-sql">CnosQL vs SQL</a></h2>
-<ul>
-<li>
-<p>时间序列数据在聚合场景中最有用</p>
-</li>
-<li>
-<p>CnosDB 中的<code>measurement</code>类似于一个 SQL 中的<code>table</code></p>
-</li>
-<li>
-<p>CnosDB 中的<code>tag</code>就像 SQL 中的一个带索引的列</p>
-</li>
-<li>
-<p>CnosDB 中的<code>field</code>就像 SQL 中的没有索引的列</p>
-</li>
-<li>
-<p>CnosDB<code>points</code>类似于 SQL 中的行</p>
-</li>
-<li>
-<p>CnosDB 中不需要预定义<code>schema</code></p>
-</li>
-</ul>
-<h2 id="查询入门"><a class="header" href="#查询入门">查询入门</a></h2>
-<h3 id="查看所有-measurements"><a class="header" href="#查看所有-measurements">查看所有 <code>measurements</code></a></h3>
-<pre><code>show measurements
-</code></pre>
-<h3 id="计算h2o_feet中water_levle的数量"><a class="header" href="#计算h2o_feet中water_levle的数量">计算<code>h2o_feet</code>中<code>water_levle</code>的数量</a></h3>
-<pre><code>SELECT COUNT(&quot;water_level&quot;) FROM h2o_feet
-</code></pre>
-<h3 id="查看h2o_feet中的前五个值"><a class="header" href="#查看h2o_feet中的前五个值">查看<code>h2o_feet</code>中的前五个值</a></h3>
-<pre><code>SELECT * FROM h2o_feet LIMIT 5
-</code></pre>
-<h3 id="指定字段的标识符号"><a class="header" href="#指定字段的标识符号">指定字段的标识符号</a></h3>
-<pre><code>SELECT &quot;level description&quot;::field,&quot;location&quot;::tag,&quot;water_level&quot;::field FROM &quot;h2o_feet&quot; limit 10
-</code></pre>
-<h3 id="查看measurement的tag-key"><a class="header" href="#查看measurement的tag-key">查看<code>measurement</code>的tag key</a></h3>
-<pre><code>SHOW TAG KEYS FROM h2o_feet
-</code></pre>
-<h3 id="查看tag-value"><a class="header" href="#查看tag-value">查看tag value</a></h3>
-<pre><code>SHOW TAG VALUES FROM h2o_feet WITH KEY = &quot;location&quot;
-</code></pre>
-<h3 id="查看field-key"><a class="header" href="#查看field-key">查看field key</a></h3>
-<pre><code>SHOW FIELD KEYS FROM h2o_feet
-</code></pre>
-<h3 id="查看series"><a class="header" href="#查看series">查看series</a></h3>
-<pre><code>SHOW SERIES
-</code></pre>
-<h3 id="函数使用"><a class="header" href="#函数使用">函数使用</a></h3>
-<blockquote>
-<p><a href="https://www.cnosdb.com/content/cnosdb/0.9/cnosql/function.html">更多</a></p>
-</blockquote>
-<pre><code>SELECT MEAN(&quot;water_level&quot;) FROM &quot;h2o_feet&quot;
-</code></pre>
-<h2 id="课堂问题"><a class="header" href="#课堂问题">课堂问题</a></h2>
-<ol>
-<li>时序数据和时序数据库的关系是什么？</li>
-<li>写出一条符合CnosDB格式的数据</li>
-<li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间在santa_monica水位最高的一条数据</li>
-<li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间coyote_creek每天的平均水温是多少</li>
-</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="next" href="../module-02/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                            <a rel="prev" href="../module-02/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -260,8 +155,8 @@ USE NOAA_water_database
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="next" href="../module-02/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                    <a rel="prev" href="../module-02/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
                     </a>
             </nav>
 
