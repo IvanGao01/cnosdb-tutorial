@@ -139,7 +139,6 @@
 <ul>
 <li>理解<code>curl</code>命令</li>
 <li>通过Http API Endpoint写入和查询数据</li>
-<li>使用Go Client写入和查询数据</li>
 </ul>
 <h2 id="理解curl命令"><a class="header" href="#理解curl命令">理解<code>curl</code>命令</a></h2>
 <p>curl是常用的命令行工具，用来请求Web服务器，它的名字就是客户端（Client）的URL工具的意思</p>
@@ -182,9 +181,8 @@
 最大行限制适用于非块查询，分块查询可以返回无限数量的point</p>
 <h3 id="chunking"><a class="header" href="#chunking">Chunking</a></h3>
 <p>通过设置查询字符串参数chunked=true，可以使用分块以流式批处理而不是作为单个响应返回结果。响应将按series或每10000point分块，以先发生者为准。要将最大块大小更改为不同的值，需要将查询字符串chunk_size设置为不同的值</p>
-<h3 id="习题联系"><a class="header" href="#习题联系">习题联系</a></h3>
+<h3 id="习题练习"><a class="header" href="#习题练习">习题练习</a></h3>
 <p>使用URL创建一个名为<code>weather</code>的数据库，并且设置Retention Policy为7天，并且Shard Duration为1天，复制因子为1</p>
-<h2 id="client-go"><a class="header" href="#client-go">Client-go</a></h2>
 
                     </main>
 
