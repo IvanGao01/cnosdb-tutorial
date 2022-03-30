@@ -66,7 +66,7 @@ max-row-limit 配置选项允许用于限制返回结果最大数量，以防止
 
 
 
-### 习题联系
+### 习题练习
 使用URL创建一个名为`weather`的数据库，并且设置Retention Policy为7天，并且Shard Duration为1天，复制因子为1
 
 
