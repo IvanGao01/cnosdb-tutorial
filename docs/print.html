@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li><li class="chapter-item expanded "><a href="module-04/index.html"><strong aria-hidden="true">5.</strong> 使用Golang操作CnosDB</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -369,6 +369,11 @@ USE NOAA_water_database
 <p>通过设置查询字符串参数chunked=true，可以使用分块以流式批处理而不是作为单个响应返回结果。响应将按series或每10000point分块，以先发生者为准。要将最大块大小更改为不同的值，需要将查询字符串chunk_size设置为不同的值</p>
 <h3 id="习题练习"><a class="header" href="#习题练习">习题练习</a></h3>
 <p>使用URL创建一个名为<code>weather</code>的数据库，并且设置Retention Policy为7天，并且Shard Duration为1天，复制因子为1</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="使用golang操作cnosdb"><a class="header" href="#使用golang操作cnosdb">使用golang操作CnosDB</a></h1>
+<h2 id="摘要-1"><a class="header" href="#摘要-1">摘要</a></h2>
+<ul>
+<li>学习使用CnosDB Golang SDK 操作CnosDB</li>
+</ul>
 
                     </main>
 
