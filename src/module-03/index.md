@@ -19,12 +19,12 @@ CnosDB API是在CnosDB中写入数据的主要方式
 
 ### 写入数据
 ```shell
-curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'h2o_feet,location=coyote_creek water_level=8.120,level\ description="between 6 and 9 feet" 1568651760000000000'
+curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'air,station=XiaoMaiDao visibility=50,temperature=63,pressure=52 1568651760000000000'
 ```
 
 ### 以文件的方式写入
 ```shell
-curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @h2o_feet_data.txt
+curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @air_data.txt
 ```
 
 ## 使用`curl`查询CnosDB API
@@ -36,24 +36,24 @@ CnosDB API 是在 CnosDB中查询数据的主要方式
 
 ### 单条查询语句
 ```shell
-curl -G "http://localhost:8086/query?pretty=true" --data-urlencode "db=NOAA_water_database" --data-urlencode "q=SELECT water_level FROM h2o_feet WHERE location='santa_monica'"
+curl -G "http://localhost:8086/query?pretty=true" --data-urlencode "db=oceanic_station" --data-urlencode "q=SELECT temperature FROM air WHERE station='XiaoMaiDao'"
 ```
 ### 返回错误
 > CnosDB返回JSON，查询的结果会在`rusults`数组中，如果发生错误，CnosDB会设置一个带有`error`的key
 ```shell
-curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=mydb" --data-urlencode "q=SELECT pH FROM h2o_pH WHERE location = 'santa_monica'"
+curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=mydb" --data-urlencode "q=SELECT temperature FROM air WHERE station='XiaoMaiDao'"
 ```
 
 ### 多条查询语句
 > 多条查询语句需要用`;`分隔
 ```shell
-curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=NOAA_water_database" --data-urlencode "q=SELECT pH FROM h2o_pH WHERE location = 'santa_monica';SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'"
+curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=oceanic_station" --data-urlencode "q=SELECT speed FROM wind WHERE station = 'XiaoMaiDao';SELECT temperature FROM air WHERE station = 'XiaoMaiDao'"
 ```
 
 ### 时间精度
 CnosDB中的所有内容都以UTC存储和输出。默认情况下，时间戳以RFC3339格式返回，例如 2015-08-04T19:05:00Z，如果想要Unix纪元格式的时间戳，则需要在请求中包含字符串参数：epoch=[h, m, s, ms, u, ns]
 ```shell
-curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=NOAA_water_database" --data-urlencode "epoch=s" --data-urlencode "q=SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'"
+curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=oceanic_station" --data-urlencode "epoch=s" --data-urlencode "q=SELECT temperature FROM air WHERE station = 'XiaoMaiDao'"
  ```
 
 ### 最大行限制

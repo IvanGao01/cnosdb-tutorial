@@ -142,8 +142,8 @@
 <h3 id="介绍"><a class="header" href="#介绍">介绍</a></h3>
 <p>CnosDB的快速入门教程，通过本课程可以学习CnosDB数据库管理，CnosDB的查询语法，CnosDB的schema原理，与第三方生态插件的结合使用的方法以及CnosDB的最佳实践</p>
 <h3 id="数据样本"><a class="header" href="#数据样本">数据样本</a></h3>
-<p>示例数据（NOAA_water_database）是海洋观测站的公开数据，数据包括在2019年8月17日到9月17日期间，在两个站点Santa Monica和Coyote Creek上收集到的水位观测值，这些数据每6分钟收集一次，总共15258条观测值。
-请注意，average_temperature、h2o_pH、h2o_quality和h2o_temperature这些measurement中包含有虚构的数据，这些数据用于阐述CnosDB中的查询功能。</p>
+<p>示例数据（oceanic_station）是<a href="http://mds.nmdis.org.cn/pages/dataViewDetail.html?dataSetId=4-1">中国海洋观测站</a>的公开数据，数据包括在2022年1月14日到4月15日期间，在两个站点XiaoMaiDao和LianYunGang上收集到的海洋观测值，这些数据每3分钟收集一次，总共87360条观测值。
+请注意，air、sea、wind中包含虚拟数据，这些数据用于阐述CnosDB中的查询功能。</p>
 <h3 id="docker"><a class="header" href="#docker">Docker</a></h3>
 <p>Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows操作系统的机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。
 更多信息请查看<a href="https://docs.docker.com">Docker官方文档</a></p>
@@ -194,13 +194,13 @@ docker exec -it container_id bash # 进入容器
 
 wget https://gist.githubusercontent.com/cnos-db/d6dad9766870a1ef50209e73d178e4d0/raw/a2ac4e57a43f68f9f2d5cacb0af15e45e8c5d4e6/NOAA_data.txt
 
-cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
+cnosdb-cli import --path oceanic_station.txt # 导入数据到cnosdb
 
 cnosdb-cli
 
 SHOW DATABASES
 
-USE NOAA_water_database
+USE oceanic_station
 
 </code></pre>
 <h2 id="cnosql-vs-sql"><a class="header" href="#cnosql-vs-sql">CnosQL vs SQL</a></h2>
@@ -228,23 +228,23 @@ USE NOAA_water_database
 <h3 id="查看所有-measurements"><a class="header" href="#查看所有-measurements">查看所有 <code>measurements</code></a></h3>
 <pre><code>show measurements
 </code></pre>
-<h3 id="计算h2o_feet中water_levle的数量"><a class="header" href="#计算h2o_feet中water_levle的数量">计算<code>h2o_feet</code>中<code>water_levle</code>的数量</a></h3>
-<pre><code>SELECT COUNT(&quot;water_level&quot;) FROM h2o_feet
+<h3 id="计算air中temperature的数量"><a class="header" href="#计算air中temperature的数量">计算<code>air</code>中<code>temperature</code>的数量</a></h3>
+<pre><code>SELECT COUNT(&quot;temperature&quot;) FROM air
 </code></pre>
-<h3 id="查看h2o_feet中的前五个值"><a class="header" href="#查看h2o_feet中的前五个值">查看<code>h2o_feet</code>中的前五个值</a></h3>
-<pre><code>SELECT * FROM h2o_feet LIMIT 5
+<h3 id="查看air中的前五个值"><a class="header" href="#查看air中的前五个值">查看<code>air</code>中的前五个值</a></h3>
+<pre><code>SELECT * FROM air LIMIT 5
 </code></pre>
 <h3 id="指定字段的标识符号"><a class="header" href="#指定字段的标识符号">指定字段的标识符号</a></h3>
-<pre><code>SELECT &quot;level description&quot;::field,&quot;location&quot;::tag,&quot;water_level&quot;::field FROM &quot;h2o_feet&quot; limit 10
+<pre><code>SELECT &quot;temperature&quot;::field,&quot;station&quot;::tag,&quot;visibility&quot;::field FROM &quot;air&quot; limit 10
 </code></pre>
 <h3 id="查看measurement的tag-key"><a class="header" href="#查看measurement的tag-key">查看<code>measurement</code>的tag key</a></h3>
-<pre><code>SHOW TAG KEYS FROM h2o_feet
+<pre><code>SHOW TAG KEYS FROM air
 </code></pre>
 <h3 id="查看tag-value"><a class="header" href="#查看tag-value">查看tag value</a></h3>
-<pre><code>SHOW TAG VALUES FROM h2o_feet WITH KEY = &quot;location&quot;
+<pre><code>SHOW TAG VALUES FROM air WITH KEY = &quot;station&quot;
 </code></pre>
 <h3 id="查看field-key"><a class="header" href="#查看field-key">查看field key</a></h3>
-<pre><code>SHOW FIELD KEYS FROM h2o_feet
+<pre><code>SHOW FIELD KEYS FROM air
 </code></pre>
 <h3 id="查看series"><a class="header" href="#查看series">查看series</a></h3>
 <pre><code>SHOW SERIES
@@ -253,14 +253,14 @@ USE NOAA_water_database
 <blockquote>
 <p><a href="https://www.cnosdb.com/content/cnosdb/0.9/cnosql/function.html">更多</a></p>
 </blockquote>
-<pre><code>SELECT MEAN(&quot;water_level&quot;) FROM &quot;h2o_feet&quot;
+<pre><code>SELECT MEAN(&quot;temperature&quot;) FROM &quot;air&quot;
 </code></pre>
 <h2 id="课堂问题"><a class="header" href="#课堂问题">课堂问题</a></h2>
 <ol>
 <li>时序数据和时序数据库的关系是什么？</li>
 <li>写出一条符合CnosDB格式的数据</li>
-<li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间在santa_monica水位最高的一条数据</li>
-<li>查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间coyote_creek每天的平均水温是多少</li>
+<li>查询出2022-01-14T00:00:00Z到2022-02-15T00:00:00Z期间在XiaoMaiDao水位最高的一条数据</li>
+<li>查询出2022-01-14T00:00:00Z到2022-02-15T00:00:00Z期间LianYunGang每天的平均水温是多少</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cnosdb-数据库管理"><a class="header" href="#cnosdb-数据库管理">CnosDB 数据库管理</a></h1>
 <blockquote>
@@ -334,33 +334,33 @@ USE NOAA_water_database
 <h2 id="使用curl通过-cnosdb-api-写入数据"><a class="header" href="#使用curl通过-cnosdb-api-写入数据">使用<code>curl</code>通过 CnosDB API 写入数据</a></h2>
 <p>CnosDB API是在CnosDB中写入数据的主要方式</p>
 <h3 id="写入数据"><a class="header" href="#写入数据">写入数据</a></h3>
-<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'h2o_feet,location=coyote_creek water_level=8.120,level\ description=&quot;between 6 and 9 feet&quot; 1568651760000000000'
+<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'air,station=XiaoMaiDao visibility=50,temperature=63,pressure=52 1568651760000000000'
 </code></pre>
 <h3 id="以文件的方式写入"><a class="header" href="#以文件的方式写入">以文件的方式写入</a></h3>
-<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @h2o_feet_data.txt
+<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @air_data.txt
 </code></pre>
 <h2 id="使用curl查询cnosdb-api"><a class="header" href="#使用curl查询cnosdb-api">使用<code>curl</code>查询CnosDB API</a></h2>
 <p>CnosDB API 是在 CnosDB中查询数据的主要方式</p>
 <p>如果需要执行查询请求，需要将GET请求发送到/query端点，将URL参数db设置为目标数据库，并将参数q设置为查询语句。还可以通过发送相同的参数作为URL参数或作为带有application/x-www-form-urlencoded的正文的一部分来使用POST请求</p>
 <p>示例：</p>
 <h3 id="单条查询语句"><a class="header" href="#单条查询语句">单条查询语句</a></h3>
-<pre><code class="language-shell">curl -G &quot;http://localhost:8086/query?pretty=true&quot; --data-urlencode &quot;db=NOAA_water_database&quot; --data-urlencode &quot;q=SELECT water_level FROM h2o_feet WHERE location='santa_monica'&quot;
+<pre><code class="language-shell">curl -G &quot;http://localhost:8086/query?pretty=true&quot; --data-urlencode &quot;db=oceanic_station&quot; --data-urlencode &quot;q=SELECT temperature FROM air WHERE station='XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="返回错误"><a class="header" href="#返回错误">返回错误</a></h3>
 <blockquote>
 <p>CnosDB返回JSON，查询的结果会在<code>rusults</code>数组中，如果发生错误，CnosDB会设置一个带有<code>error</code>的key</p>
 </blockquote>
-<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=mydb&quot; --data-urlencode &quot;q=SELECT pH FROM h2o_pH WHERE location = 'santa_monica'&quot;
+<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=mydb&quot; --data-urlencode &quot;q=SELECT temperature FROM air WHERE station='XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="多条查询语句"><a class="header" href="#多条查询语句">多条查询语句</a></h3>
 <blockquote>
 <p>多条查询语句需要用<code>;</code>分隔</p>
 </blockquote>
-<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=NOAA_water_database&quot; --data-urlencode &quot;q=SELECT pH FROM h2o_pH WHERE location = 'santa_monica';SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'&quot;
+<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=oceanic_station&quot; --data-urlencode &quot;q=SELECT speed FROM wind WHERE station = 'XiaoMaiDao';SELECT temperature FROM air WHERE station = 'XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="时间精度"><a class="header" href="#时间精度">时间精度</a></h3>
 <p>CnosDB中的所有内容都以UTC存储和输出。默认情况下，时间戳以RFC3339格式返回，例如 2015-08-04T19:05:00Z，如果想要Unix纪元格式的时间戳，则需要在请求中包含字符串参数：epoch=[h, m, s, ms, u, ns]</p>
-<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=NOAA_water_database&quot; --data-urlencode &quot;epoch=s&quot; --data-urlencode &quot;q=SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'&quot;
+<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=oceanic_station&quot; --data-urlencode &quot;epoch=s&quot; --data-urlencode &quot;q=SELECT temperature FROM air WHERE station = 'XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="最大行限制"><a class="header" href="#最大行限制">最大行限制</a></h3>
 <p>max-row-limit 配置选项允许用于限制返回结果最大数量，以防止CnosDB在聚合结果时耗尽内存，max-row-limit配置选项默认设置为0，该默认设置允许每个请求返回无限数量的行。
@@ -369,11 +369,164 @@ USE NOAA_water_database
 <p>通过设置查询字符串参数chunked=true，可以使用分块以流式批处理而不是作为单个响应返回结果。响应将按series或每10000point分块，以先发生者为准。要将最大块大小更改为不同的值，需要将查询字符串chunk_size设置为不同的值</p>
 <h3 id="习题练习"><a class="header" href="#习题练习">习题练习</a></h3>
 <p>使用URL创建一个名为<code>weather</code>的数据库，并且设置Retention Policy为7天，并且Shard Duration为1天，复制因子为1</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="使用golang操作cnosdb"><a class="header" href="#使用golang操作cnosdb">使用golang操作CnosDB</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="使用golang操作cnosdb"><a class="header" href="#使用golang操作cnosdb">使用Golang操作CnosDB</a></h1>
 <h2 id="摘要-1"><a class="header" href="#摘要-1">摘要</a></h2>
 <ul>
 <li>学习使用CnosDB Golang SDK 操作CnosDB</li>
 </ul>
+<h2 id="使用ping查看cnosdb状态"><a class="header" href="#使用ping查看cnosdb状态">使用/ping查看cnosdb状态</a></h2>
+<pre><code class="language-go">func ExampleClient_Ping() {
+
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	_, rs, err := c.Ping(0)
+	fmt.Println(&quot;version:&quot;, rs)
+	if err != nil {
+		fmt.Println(&quot;Error pinging CnosDB: &quot;, err.Error())
+	}
+}
+</code></pre>
+<h2 id="使用http-client写入一个point"><a class="header" href="#使用http-client写入一个point">使用http client写入一个point</a></h2>
+<pre><code class="language-go">func ExampleClient_write() {
+	// Make client
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	// Create a new point batch
+	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
+		Database:  &quot;oceanic_station&quot;,
+		Precision: &quot;s&quot;,
+	})
+
+	// Create a point and add to batch
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err != nil {
+		fmt.Println(&quot;Error: &quot;, err.Error())
+	}
+	bp.AddPoint(pt)
+
+	// Write the batch
+	c.Write(bp)
+}
+</code></pre>
+<h2 id="创建一个batchpoint并添加一个point"><a class="header" href="#创建一个batchpoint并添加一个point">创建一个BatchPoint，并添加一个Point</a></h2>
+<pre><code class="language-go">func ExampleBatchPoints() {
+	// Create a new point batch
+	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
+		Database:  &quot;oceanic_station&quot;,
+		Precision: &quot;s&quot;,
+	})
+
+	// Create a point and add to batch
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err != nil {
+		fmt.Println(&quot;Error: &quot;, err.Error())
+	}
+	bp.AddPoint(pt)
+}
+</code></pre>
+<h2 id="使用batchpoint的setter方法"><a class="header" href="#使用batchpoint的setter方法">使用BatchPoint的setter方法</a></h2>
+<pre><code class="language-go">func ExampleBatchPoints_setters() {
+	// Create a new point batch
+	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{})
+	bp.SetDatabase(&quot;oceanic_station&quot;)
+	bp.SetPrecision(&quot;ms&quot;)
+
+	// Create a point and add to batch
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err != nil {
+		fmt.Println(&quot;Error: &quot;, err.Error())
+	}
+	bp.AddPoint(pt)
+}
+</code></pre>
+<h2 id="创建一个point并设置时间戳"><a class="header" href="#创建一个point并设置时间戳">创建一个point并设置时间戳</a></h2>
+<pre><code class="language-go">func ExamplePoint() {
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err == nil {
+		fmt.Println(&quot;We created a point: &quot;, pt.String())
+	}
+}
+</code></pre>
+<h2 id="创建一个没有时间戳的point"><a class="header" href="#创建一个没有时间戳的point">创建一个没有时间戳的point</a></h2>
+<pre><code class="language-go">func ExamplePoint_withoutTime() {
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields)
+	if err == nil {
+		fmt.Println(&quot;We created a point w/o time: &quot;, pt.String())
+	}
+}
+</code></pre>
+<h2 id="创建一个查询请求"><a class="header" href="#创建一个查询请求">创建一个查询请求</a></h2>
+<pre><code class="language-go">func ExampleClient_query() {
+	// Make client
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	q := client.NewQuery(&quot;SELECT temperature FROM air limit 10&quot;, &quot;oceanic_station&quot;, &quot;ns&quot;)
+	if response, err := c.Query(q); err == nil &amp;&amp; response.Error() == nil {
+		fmt.Println(response.Results)
+	}
+}
+</code></pre>
+<h2 id="创建一个查询请求并指定数据库"><a class="header" href="#创建一个查询请求并指定数据库">创建一个查询请求并指定数据库</a></h2>
+<pre><code class="language-go">func ExampleClient_createDatabase() {
+	// Make client
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	q := client.NewQuery(&quot;CREATE DATABASE mydb&quot;, &quot;&quot;, &quot;&quot;)
+	if response, err := c.Query(q); err == nil &amp;&amp; response.Error() == nil {
+		fmt.Println(response.Results)
+	}
+}
+
+</code></pre>
 
                     </main>
 

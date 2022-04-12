@@ -51,13 +51,13 @@ docker exec -it container_id bash # 进入容器
 
 wget https://gist.githubusercontent.com/cnos-db/d6dad9766870a1ef50209e73d178e4d0/raw/a2ac4e57a43f68f9f2d5cacb0af15e45e8c5d4e6/NOAA_data.txt
 
-cnosdb-cli import --path NOAA_data.txt # 导入数据到cnosdb
+cnosdb-cli import --path oceanic_station.txt # 导入数据到cnosdb
 
 cnosdb-cli
 
 SHOW DATABASES
 
-USE NOAA_water_database
+USE oceanic_station
 
 ```
 
@@ -81,30 +81,30 @@ USE NOAA_water_database
 
     show measurements
 
-### 计算`h2o_feet`中`water_levle`的数量
+### 计算`air`中`temperature`的数量
 
-    SELECT COUNT("water_level") FROM h2o_feet
+    SELECT COUNT("temperature") FROM air
 
 
-### 查看`h2o_feet`中的前五个值
+### 查看`air`中的前五个值
 
-    SELECT * FROM h2o_feet LIMIT 5
+    SELECT * FROM air LIMIT 5
 
 ### 指定字段的标识符号
 
-    SELECT "level description"::field,"location"::tag,"water_level"::field FROM "h2o_feet" limit 10
+    SELECT "temperature"::field,"station"::tag,"visibility"::field FROM "air" limit 10
 
 ### 查看`measurement`的tag key
 
-    SHOW TAG KEYS FROM h2o_feet
+    SHOW TAG KEYS FROM air
 
 ### 查看tag value
 
-    SHOW TAG VALUES FROM h2o_feet WITH KEY = "location"
+    SHOW TAG VALUES FROM air WITH KEY = "station"
 
 ### 查看field key
 
-    SHOW FIELD KEYS FROM h2o_feet
+    SHOW FIELD KEYS FROM air
 
 ### 查看series
 
@@ -113,12 +113,12 @@ USE NOAA_water_database
 ### 函数使用
 > [更多](https://www.cnosdb.com/content/cnosdb/0.9/cnosql/function.html)
 
-    SELECT MEAN("water_level") FROM "h2o_feet"
+    SELECT MEAN("temperature") FROM "air"
 
 
 ## 课堂问题
 
 1. 时序数据和时序数据库的关系是什么？
 2. 写出一条符合CnosDB格式的数据
-3. 查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间在santa_monica水位最高的一条数据
-4. 查询出2019-08-17T00:00:00Z到2019-09-18T00:00:00Z期间coyote_creek每天的平均水温是多少
+3. 查询出2022-01-14T00:00:00Z到2022-02-15T00:00:00Z期间在XiaoMaiDao水位最高的一条数据
+4. 查询出2022-01-14T00:00:00Z到2022-02-15T00:00:00Z期间LianYunGang每天的平均水温是多少

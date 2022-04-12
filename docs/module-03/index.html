@@ -148,33 +148,33 @@
 <h2 id="使用curl通过-cnosdb-api-写入数据"><a class="header" href="#使用curl通过-cnosdb-api-写入数据">使用<code>curl</code>通过 CnosDB API 写入数据</a></h2>
 <p>CnosDB API是在CnosDB中写入数据的主要方式</p>
 <h3 id="写入数据"><a class="header" href="#写入数据">写入数据</a></h3>
-<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'h2o_feet,location=coyote_creek water_level=8.120,level\ description=&quot;between 6 and 9 feet&quot; 1568651760000000000'
+<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'air,station=XiaoMaiDao visibility=50,temperature=63,pressure=52 1568651760000000000'
 </code></pre>
 <h3 id="以文件的方式写入"><a class="header" href="#以文件的方式写入">以文件的方式写入</a></h3>
-<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @h2o_feet_data.txt
+<pre><code class="language-shell">curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @air_data.txt
 </code></pre>
 <h2 id="使用curl查询cnosdb-api"><a class="header" href="#使用curl查询cnosdb-api">使用<code>curl</code>查询CnosDB API</a></h2>
 <p>CnosDB API 是在 CnosDB中查询数据的主要方式</p>
 <p>如果需要执行查询请求，需要将GET请求发送到/query端点，将URL参数db设置为目标数据库，并将参数q设置为查询语句。还可以通过发送相同的参数作为URL参数或作为带有application/x-www-form-urlencoded的正文的一部分来使用POST请求</p>
 <p>示例：</p>
 <h3 id="单条查询语句"><a class="header" href="#单条查询语句">单条查询语句</a></h3>
-<pre><code class="language-shell">curl -G &quot;http://localhost:8086/query?pretty=true&quot; --data-urlencode &quot;db=NOAA_water_database&quot; --data-urlencode &quot;q=SELECT water_level FROM h2o_feet WHERE location='santa_monica'&quot;
+<pre><code class="language-shell">curl -G &quot;http://localhost:8086/query?pretty=true&quot; --data-urlencode &quot;db=oceanic_station&quot; --data-urlencode &quot;q=SELECT temperature FROM air WHERE station='XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="返回错误"><a class="header" href="#返回错误">返回错误</a></h3>
 <blockquote>
 <p>CnosDB返回JSON，查询的结果会在<code>rusults</code>数组中，如果发生错误，CnosDB会设置一个带有<code>error</code>的key</p>
 </blockquote>
-<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=mydb&quot; --data-urlencode &quot;q=SELECT pH FROM h2o_pH WHERE location = 'santa_monica'&quot;
+<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=mydb&quot; --data-urlencode &quot;q=SELECT temperature FROM air WHERE station='XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="多条查询语句"><a class="header" href="#多条查询语句">多条查询语句</a></h3>
 <blockquote>
 <p>多条查询语句需要用<code>;</code>分隔</p>
 </blockquote>
-<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=NOAA_water_database&quot; --data-urlencode &quot;q=SELECT pH FROM h2o_pH WHERE location = 'santa_monica';SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'&quot;
+<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=oceanic_station&quot; --data-urlencode &quot;q=SELECT speed FROM wind WHERE station = 'XiaoMaiDao';SELECT temperature FROM air WHERE station = 'XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="时间精度"><a class="header" href="#时间精度">时间精度</a></h3>
 <p>CnosDB中的所有内容都以UTC存储和输出。默认情况下，时间戳以RFC3339格式返回，例如 2015-08-04T19:05:00Z，如果想要Unix纪元格式的时间戳，则需要在请求中包含字符串参数：epoch=[h, m, s, ms, u, ns]</p>
-<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=NOAA_water_database&quot; --data-urlencode &quot;epoch=s&quot; --data-urlencode &quot;q=SELECT water_level FROM h2o_feet WHERE location = 'santa_monica'&quot;
+<pre><code class="language-shell">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode &quot;db=oceanic_station&quot; --data-urlencode &quot;epoch=s&quot; --data-urlencode &quot;q=SELECT temperature FROM air WHERE station = 'XiaoMaiDao'&quot;
 </code></pre>
 <h3 id="最大行限制"><a class="header" href="#最大行限制">最大行限制</a></h3>
 <p>max-row-limit 配置选项允许用于限制返回结果最大数量，以防止CnosDB在聚合结果时耗尽内存，max-row-limit配置选项默认设置为0，该默认设置允许每个请求返回无限数量的行。

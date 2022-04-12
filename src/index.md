@@ -6,8 +6,8 @@ CnosDB的快速入门教程，通过本课程可以学习CnosDB数据库管理�
 
 ### 数据样本
 
-示例数据（NOAA_water_database）是海洋观测站的公开数据，数据包括在2019年8月17日到9月17日期间，在两个站点Santa Monica和Coyote Creek上收集到的水位观测值，这些数据每6分钟收集一次，总共15258条观测值。
-请注意，average_temperature、h2o_pH、h2o_quality和h2o_temperature这些measurement中包含有虚构的数据，这些数据用于阐述CnosDB中的查询功能。
+示例数据（oceanic_station）是[中国海洋观测站](http://mds.nmdis.org.cn/pages/dataViewDetail.html?dataSetId=4-1)的公开数据，数据包括在2022年1月14日到4月15日期间，在两个站点XiaoMaiDao和LianYunGang上收集到的海洋观测值，这些数据每3分钟收集一次，总共87360条观测值。
+请注意，air、sea、wind中包含虚拟数据，这些数据用于阐述CnosDB中的查询功能。
 
 
 ### Docker

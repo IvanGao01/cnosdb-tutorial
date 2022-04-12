@@ -134,11 +134,164 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="使用golang操作cnosdb"><a class="header" href="#使用golang操作cnosdb">使用golang操作CnosDB</a></h1>
+                        <h1 id="使用golang操作cnosdb"><a class="header" href="#使用golang操作cnosdb">使用Golang操作CnosDB</a></h1>
 <h2 id="摘要"><a class="header" href="#摘要">摘要</a></h2>
 <ul>
 <li>学习使用CnosDB Golang SDK 操作CnosDB</li>
 </ul>
+<h2 id="使用ping查看cnosdb状态"><a class="header" href="#使用ping查看cnosdb状态">使用/ping查看cnosdb状态</a></h2>
+<pre><code class="language-go">func ExampleClient_Ping() {
+
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	_, rs, err := c.Ping(0)
+	fmt.Println(&quot;version:&quot;, rs)
+	if err != nil {
+		fmt.Println(&quot;Error pinging CnosDB: &quot;, err.Error())
+	}
+}
+</code></pre>
+<h2 id="使用http-client写入一个point"><a class="header" href="#使用http-client写入一个point">使用http client写入一个point</a></h2>
+<pre><code class="language-go">func ExampleClient_write() {
+	// Make client
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	// Create a new point batch
+	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
+		Database:  &quot;oceanic_station&quot;,
+		Precision: &quot;s&quot;,
+	})
+
+	// Create a point and add to batch
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err != nil {
+		fmt.Println(&quot;Error: &quot;, err.Error())
+	}
+	bp.AddPoint(pt)
+
+	// Write the batch
+	c.Write(bp)
+}
+</code></pre>
+<h2 id="创建一个batchpoint并添加一个point"><a class="header" href="#创建一个batchpoint并添加一个point">创建一个BatchPoint，并添加一个Point</a></h2>
+<pre><code class="language-go">func ExampleBatchPoints() {
+	// Create a new point batch
+	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
+		Database:  &quot;oceanic_station&quot;,
+		Precision: &quot;s&quot;,
+	})
+
+	// Create a point and add to batch
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err != nil {
+		fmt.Println(&quot;Error: &quot;, err.Error())
+	}
+	bp.AddPoint(pt)
+}
+</code></pre>
+<h2 id="使用batchpoint的setter方法"><a class="header" href="#使用batchpoint的setter方法">使用BatchPoint的setter方法</a></h2>
+<pre><code class="language-go">func ExampleBatchPoints_setters() {
+	// Create a new point batch
+	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{})
+	bp.SetDatabase(&quot;oceanic_station&quot;)
+	bp.SetPrecision(&quot;ms&quot;)
+
+	// Create a point and add to batch
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err != nil {
+		fmt.Println(&quot;Error: &quot;, err.Error())
+	}
+	bp.AddPoint(pt)
+}
+</code></pre>
+<h2 id="创建一个point并设置时间戳"><a class="header" href="#创建一个point并设置时间戳">创建一个point并设置时间戳</a></h2>
+<pre><code class="language-go">func ExamplePoint() {
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
+	if err == nil {
+		fmt.Println(&quot;We created a point: &quot;, pt.String())
+	}
+}
+</code></pre>
+<h2 id="创建一个没有时间戳的point"><a class="header" href="#创建一个没有时间戳的point">创建一个没有时间戳的point</a></h2>
+<pre><code class="language-go">func ExamplePoint_withoutTime() {
+	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
+	fields := map[string]interface{}{
+		&quot;temperature&quot;: 67,
+		&quot;visibility&quot;:  58,
+	}
+	pt, err := client.NewPoint(&quot;air&quot;, tags, fields)
+	if err == nil {
+		fmt.Println(&quot;We created a point w/o time: &quot;, pt.String())
+	}
+}
+</code></pre>
+<h2 id="创建一个查询请求"><a class="header" href="#创建一个查询请求">创建一个查询请求</a></h2>
+<pre><code class="language-go">func ExampleClient_query() {
+	// Make client
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	q := client.NewQuery(&quot;SELECT temperature FROM air limit 10&quot;, &quot;oceanic_station&quot;, &quot;ns&quot;)
+	if response, err := c.Query(q); err == nil &amp;&amp; response.Error() == nil {
+		fmt.Println(response.Results)
+	}
+}
+</code></pre>
+<h2 id="创建一个查询请求并指定数据库"><a class="header" href="#创建一个查询请求并指定数据库">创建一个查询请求并指定数据库</a></h2>
+<pre><code class="language-go">func ExampleClient_createDatabase() {
+	// Make client
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: &quot;http://localhost:8086&quot;,
+	})
+	if err != nil {
+		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
+	}
+	defer c.Close()
+
+	q := client.NewQuery(&quot;CREATE DATABASE mydb&quot;, &quot;&quot;, &quot;&quot;)
+	if response, err := c.Query(q); err == nil &amp;&amp; response.Error() == nil {
+		fmt.Println(response.Results)
+	}
+}
+
+</code></pre>
 
                     </main>
 
