@@ -176,9 +176,9 @@ docker ps # 查看运行中的容器
 
 docker exec -it container_id bash # 进入容器
 
-wget https://gist.githubusercontent.com/cnos-db/d6dad9766870a1ef50209e73d178e4d0/raw/a2ac4e57a43f68f9f2d5cacb0af15e45e8c5d4e6/NOAA_data.txt
+wget https://gist.githubusercontent.com/cnos-db/9839ac8e78e45b0ee50d2803de4acfd8/raw/818b19d0dd3c80befe636b60ee569451ac2ca4b1/oceanic_station
 
-cnosdb-cli import --path oceanic_station.txt # 导入数据到cnosdb
+cnosdb-cli import --path oceanic_station # 导入数据到cnosdb
 
 cnosdb-cli
 
@@ -235,7 +235,7 @@ USE oceanic_station
 </code></pre>
 <h3 id="函数使用"><a class="header" href="#函数使用">函数使用</a></h3>
 <blockquote>
-<p><a href="https://www.cnosdb.com/content/cnosdb/0.9/cnosql/function.html">更多</a></p>
+<p><a href="https://www.cnosdb.com/content/cnosdb/0.10/cnosql/function.html">更多</a></p>
 </blockquote>
 <pre><code>SELECT MEAN(&quot;temperature&quot;) FROM &quot;air&quot;
 </code></pre>
