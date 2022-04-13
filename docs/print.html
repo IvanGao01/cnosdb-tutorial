@@ -509,24 +509,6 @@ USE oceanic_station
 	}
 }
 </code></pre>
-<h2 id="创建一个查询请求并指定数据库"><a class="header" href="#创建一个查询请求并指定数据库">创建一个查询请求并指定数据库</a></h2>
-<pre><code class="language-go">func ExampleClient_createDatabase() {
-	// Make client
-	c, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: &quot;http://localhost:8086&quot;,
-	})
-	if err != nil {
-		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
-	}
-	defer c.Close()
-
-	q := client.NewQuery(&quot;CREATE DATABASE mydb&quot;, &quot;&quot;, &quot;&quot;)
-	if response, err := c.Query(q); err == nil &amp;&amp; response.Error() == nil {
-		fmt.Println(response.Results)
-	}
-}
-
-</code></pre>
 
                     </main>
 

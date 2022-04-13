@@ -147,22 +147,3 @@ func ExampleClient_query() {
 	}
 }
 ```
-## 创建一个查询请求并指定数据库
-```go
-func ExampleClient_createDatabase() {
-	// Make client
-	c, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: "http://localhost:8086",
-	})
-	if err != nil {
-		fmt.Println("Error creating CnosDB Client: ", err.Error())
-	}
-	defer c.Close()
-
-	q := client.NewQuery("CREATE DATABASE mydb", "", "")
-	if response, err := c.Query(q); err == nil && response.Error() == nil {
-		fmt.Println(response.Results)
-	}
-}
-
-```
