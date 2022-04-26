@@ -143,19 +143,139 @@
 <p><a href="#%E5%85%B6%E4%BB%96">其他</a></p>
 </blockquote>
 <h2 id="基础语法"><a class="header" href="#基础语法">基础语法</a></h2>
-<ul>
-<li>SELECT</li>
-<li>WHERE</li>
-<li>GROUP BY</li>
-<li>INTO</li>
-</ul>
+<h3 id="select"><a class="header" href="#select">SELECT</a></h3>
+<h4 id="语法"><a class="header" href="#语法">语法</a></h4>
+<pre><code class="language-sql">SELECT &lt;field_key&gt;[,&lt;field_key&gt;,&lt;tag_key&gt;] FROM &lt;measurement_name&gt;[,&lt;measurement_name&gt;]
+</code></pre>
+<h4 id="示例"><a class="header" href="#示例">示例</a></h4>
+<p>查询单个measurement中的所有tag和field</p>
+<pre><code class="language-sql">select * from air
+</code></pre>
+<p>查询单个measurement中指定的tag和field</p>
+<pre><code class="language-sql">select station, pressure from air
+</code></pre>
+<p>查询单个measurement中特定的field并进行基础运算</p>
+<pre><code class="language-sql">select (temperature * 2)+3 from air
+</code></pre>
+<p>查询多个measurement中多所有数据</p>
+<pre><code class="language-sql">select * from air, sea
+</code></pre>
+<p>查询指定保留策略下的指定measurement中的数据</p>
+<pre><code class="language-sql">select * from &quot;oceanic_station&quot;.&quot;autogen&quot;.&quot;air&quot;
+</code></pre>
+<p>查询数据库下指定measurement的所有数据</p>
+<pre><code class="language-sql">select * from &quot;oceanic_station&quot;..&quot;air&quot;
+</code></pre>
+<h3 id="where"><a class="header" href="#where">WHERE</a></h3>
+<h4 id="语法-1"><a class="header" href="#语法-1">语法</a></h4>
+<pre><code class="language-sql">SELECT_clause FROM_clause WHERE &lt;conditional_expression&gt; [(AND|OR) &lt;conditional_expression&gt; [...]]
+</code></pre>
+<h4 id="示例-1"><a class="header" href="#示例-1">示例</a></h4>
+<p>查询满足限制field value条件的数据</p>
+<pre><code class="language-sql">select * from air where temperature &gt; 60
+</code></pre>
+<p>在<code>WHERE</code>中添加基本运算</p>
+<pre><code class="language-sql">select * from air where temperature - 20 &gt; 40
+</code></pre>
+<p>查询限制tag value条件的数据</p>
+<pre><code>select * from air where station = 'XiaoMaiDao'
+</code></pre>
+<p>查询既满足tag value也满足field value条件的数据</p>
+<pre><code class="language-sql">select station, temperature from air where station = 'XiaoMaiDao' and (temperature &gt; 50 and temperature &lt; 60)
+</code></pre>
+<pre><code class="language-sql">查询满足timestamp条件的数据
+</code></pre>
+<pre><code class="language-sql">select * from air where time &gt; now() - 30d
+</code></pre>
+<blockquote>
+<p>注意以下查询语句返回的结果
+select * from air where station = XiaoMaiDao
+select * from air where station = &quot;XiaoMaiDao&quot;
+select * from air where station = 'XiaoMaiDao'</p>
+</blockquote>
+<h3 id="group-by"><a class="header" href="#group-by">GROUP BY</a></h3>
+<h4 id="语法-2"><a class="header" href="#语法-2">语法</a></h4>
+<pre><code class="language-sql">SELECT_clause FROM_clause [WHERE_clause] GROUP BY [* | &lt;tag_key&gt;[,&lt;tag_key]]
+</code></pre>
+<h4 id="示例-2"><a class="header" href="#示例-2">示例</a></h4>
+<p>使用tag对结果进行分组</p>
+<pre><code class="language-sql">select * from air group by station
+</code></pre>
+<p>使用time internal对结果进行分组</p>
+<pre><code class="language-sql">select mean(*) from air group by time(30m)
+</code></pre>
+<p>使用time internal对结果进行分组，添加时间限制条件</p>
+<pre><code class="language-sql">select mean(*) from air where time &lt; '2022-04-15T16:00:00Z' group by time(30m)
+</code></pre>
+<p>设置时间偏移</p>
+<pre><code class="language-sql">select mean(*) from air where time &lt; '2022-04-15T16:00:00Z' group by time(30m,60m)
+</code></pre>
+<h3 id="插值运算"><a class="header" href="#插值运算">插值运算</a></h3>
+<pre><code class="language-sql">fill([linear | none | null | previous | 任意数值])
+</code></pre>
+<h4 id="示例-3"><a class="header" href="#示例-3">示例</a></h4>
+<pre><code class="language-sql">select mean(temperature) from air group by time(1w) fill(linear)
+</code></pre>
+<pre><code class="language-sql">select mean(temperature) from air group by time(1w) fill(none)
+</code></pre>
+<pre><code class="language-sql">select mean(temperature) from air group by time(1w) fill(null)
+</code></pre>
+<pre><code class="language-sql">select mean(temperature) from air group by time(1w) fill(previous)
+</code></pre>
+<pre><code class="language-sql">select mean(temperature) from air group by time(1w) fill(50)
+</code></pre>
+<h3 id="into"><a class="header" href="#into">INTO</a></h3>
+<h4 id="语法-3"><a class="header" href="#语法-3">语法</a></h4>
+<pre><code class="language-sql">SELECT_clause INTO &lt;measurement_name&gt; FROM_clause [WHERE_clause] [GROUP_BY_clause]
+</code></pre>
+<h4 id="示例-4"><a class="header" href="#示例-4">示例</a></h4>
+<p>重命名数据库</p>
+<pre><code class="language-sql">select * into &quot;copy_oceanic_station&quot;.&quot;autogen&quot;.:MEASUREMENT from &quot;oceanic_station&quot;.&quot;autogen&quot;./.*/ group by *
+</code></pre>
+<p>将查询结果写入measurement</p>
+<pre><code class="language-sql">select temperature into XiaoMaiDao_air_temperature from air where station = 'XiaoMaiDao'
+</code></pre>
+<p>将聚合结果写入指定measurement</p>
+<pre><code class="language-sql">select mean(temperature) into &quot;temperature_mean_1h&quot; from air where station = 'XiaoMaiDao' and time &gt;= '2022-03-01T00:00:00Z' and time &lt;= '2022-04-01T00:00:00Z' group by time(1h)
+</code></pre>
+<p>将多个measurement的聚合结果写入一个不同的数据库</p>
+<pre><code class="language-sql">select MEAN(*) into &quot;other_database&quot;.&quot;autogen&quot;.:MEASUREMENT from /.*/ where time &gt;= '2022-03-01T00:00:00Z' and time &lt;= '2022-04-01T00:06:00Z' group by time(1h)
+</code></pre>
 <h2 id="配置查询结果"><a class="header" href="#配置查询结果">配置查询结果</a></h2>
-<ul>
-<li>ORDER BY time</li>
-<li>LIMIT 和 SLIMIT</li>
-<li>OFFSET 和 SOFFSET</li>
-<li>Time Zone</li>
-</ul>
+<h3 id="order-by-time"><a class="header" href="#order-by-time">ORDER BY time</a></h3>
+<h4 id="语法-4"><a class="header" href="#语法-4">语法</a></h4>
+<pre><code class="language-sql">SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] ORDER BY time DESC
+</code></pre>
+<h4 id="示例-5"><a class="header" href="#示例-5">示例</a></h4>
+<pre><code class="language-sql">select * from air order by time desc
+</code></pre>
+<h3 id="limit-和-slimit"><a class="header" href="#limit-和-slimit">LIMIT 和 SLIMIT</a></h3>
+<h4 id="语法-5"><a class="header" href="#语法-5">语法</a></h4>
+<pre><code class="language-sql">SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] LIMIT &lt;N&gt;
+SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] GROUP BY *[,time(&lt;time_interval&gt;)] [ORDER_BY_clause] SLIMIT &lt;N&gt;
+</code></pre>
+<h4 id="示例-6"><a class="header" href="#示例-6">示例</a></h4>
+<p>限制返回的数据条数</p>
+<pre><code class="language-sql">select * from air limit 3
+</code></pre>
+<p>限制返回的series个数</p>
+<pre><code class="language-sql">select mean(temperature) from air group by * slimit 1
+</code></pre>
+<h3 id="offset-和-soffset"><a class="header" href="#offset-和-soffset">OFFSET 和 SOFFSET</a></h3>
+<h4 id="语法-6"><a class="header" href="#语法-6">语法</a></h4>
+<pre><code class="language-sql">SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] LIMIT_clause OFFSET &lt;N&gt; [SLIMIT_clause]
+SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] GROUP BY *[,time(time_interval)] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] SLIMIT_clause SOFFSET &lt;N&gt;
+</code></pre>
+<h4 id="示例-7"><a class="header" href="#示例-7">示例</a></h4>
+<pre><code class="language-sql">select * from air limit 1 offset 1
+</code></pre>
+<pre><code class="language-sql">select mean(temperature) from air group by * slimit 1 soffset 1
+</code></pre>
+<h3 id="time-zone"><a class="header" href="#time-zone">Time Zone</a></h3>
+<pre><code class="language-sql">SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause] tz('&lt;time_zone&gt;')
+</code></pre>
+<pre><code class="language-sql">select * from air limit 10 tz('Asia/Shanghai')
+</code></pre>
 <h2 id="其他"><a class="header" href="#其他">其他</a></h2>
 <ul>
 <li>查询会合并series</li>
