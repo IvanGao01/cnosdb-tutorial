@@ -231,6 +231,30 @@ select * from air limit 10 tz('Asia/Shanghai')
 
 ## 其他
 
-- 查询会合并series
-- 多条语句查询
-- 子查询
+### 查询会合并series
+以下在计算temperature的平均值的时候会将两个station合并
+```sql
+select mean(temperature) from air
+```
+如果需要只计算其中一个station中的平均值
+```sql
+select mean(temperature) from air ?
+```
+如果需要计算其中每一个station中的平均值
+```sql
+select mean(temperature) from air ?
+```
+### 多条语句查询
+```sql
+select * from air limit 5;select * from sea limit 5
+```
+### 子查询
+#### 语法
+```sql
+SELECT_clause FROM ( SELECT_statement ) [...]
+```
+#### 示例
+```sql
+select sum(max) from (select MAX(temperature) from air group by station)
+```
+

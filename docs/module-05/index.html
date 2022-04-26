@@ -277,11 +277,26 @@ SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] GROUP BY *[,time(time_int
 <pre><code class="language-sql">select * from air limit 10 tz('Asia/Shanghai')
 </code></pre>
 <h2 id="其他"><a class="header" href="#其他">其他</a></h2>
-<ul>
-<li>查询会合并series</li>
-<li>多条语句查询</li>
-<li>子查询</li>
-</ul>
+<h3 id="查询会合并series"><a class="header" href="#查询会合并series">查询会合并series</a></h3>
+<p>以下在计算temperature的平均值的时候会将两个station合并</p>
+<pre><code class="language-sql">select mean(temperature) from air
+</code></pre>
+<p>如果需要只计算其中一个station中的平均值</p>
+<pre><code class="language-sql">select mean(temperature) from air ?
+</code></pre>
+<p>如果需要计算其中每一个station中的平均值</p>
+<pre><code class="language-sql">select mean(temperature) from air ?
+</code></pre>
+<h3 id="多条语句查询"><a class="header" href="#多条语句查询">多条语句查询</a></h3>
+<pre><code class="language-sql">select * from air limit 5;select * from sea limit 5
+</code></pre>
+<h3 id="子查询"><a class="header" href="#子查询">子查询</a></h3>
+<h4 id="语法-7"><a class="header" href="#语法-7">语法</a></h4>
+<pre><code class="language-sql">SELECT_clause FROM ( SELECT_statement ) [...]
+</code></pre>
+<h4 id="示例-8"><a class="header" href="#示例-8">示例</a></h4>
+<pre><code class="language-sql">select sum(max) from (select MAX(temperature) from air group by station)
+</code></pre>
 
                     </main>
 
