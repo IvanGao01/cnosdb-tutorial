@@ -538,9 +538,6 @@ USE oceanic_station
 <p>查询指定保留策略下的指定measurement中的数据</p>
 <pre><code class="language-sql">select * from &quot;oceanic_station&quot;.&quot;autogen&quot;.&quot;air&quot;
 </code></pre>
-<p>查询数据库下指定measurement的所有数据</p>
-<pre><code class="language-sql">select * from &quot;oceanic_station&quot;..&quot;air&quot;
-</code></pre>
 <h3 id="where"><a class="header" href="#where">WHERE</a></h3>
 <h4 id="语法-1"><a class="header" href="#语法-1">语法</a></h4>
 <pre><code class="language-sql">SELECT_clause FROM_clause WHERE &lt;conditional_expression&gt; [(AND|OR) &lt;conditional_expression&gt; [...]]
@@ -581,9 +578,6 @@ select * from air where station = 'XiaoMaiDao'</p>
 </code></pre>
 <p>使用time internal对结果进行分组，添加时间限制条件</p>
 <pre><code class="language-sql">select mean(*) from air where time &lt; '2022-04-15T16:00:00Z' group by time(30m)
-</code></pre>
-<p>设置时间偏移</p>
-<pre><code class="language-sql">select mean(*) from air where time &lt; '2022-04-15T16:00:00Z' group by time(30m,60m)
 </code></pre>
 <h3 id="插值运算"><a class="header" href="#插值运算">插值运算</a></h3>
 <pre><code class="language-sql">fill([linear | none | null | previous | 任意数值])

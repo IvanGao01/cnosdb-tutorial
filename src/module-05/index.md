@@ -41,11 +41,6 @@ select * from air, sea
 select * from "oceanic_station"."autogen"."air"
 ```
 
-查询数据库下指定measurement的所有数据
-```sql
-select * from "oceanic_station".."air"
-```
-
 ### WHERE
 
 #### 语法
@@ -107,11 +102,6 @@ select mean(*) from air group by time(30m)
 
 ```sql
 select mean(*) from air where time < '2022-04-15T16:00:00Z' group by time(30m)
-```
-
-设置时间偏移
-```sql
-select mean(*) from air where time < '2022-04-15T16:00:00Z' group by time(30m,60m)
 ```
 
 ### 插值运算
