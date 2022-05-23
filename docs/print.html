@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li><li class="chapter-item expanded "><a href="module-04/index.html"><strong aria-hidden="true">5.</strong> 使用Golang操作CnosDB</a></li><li class="chapter-item expanded "><a href="module-05/index.html"><strong aria-hidden="true">6.</strong> 查询语法</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li><li class="chapter-item expanded "><a href="module-04/index.html"><strong aria-hidden="true">5.</strong> 使用Golang操作CnosDB</a></li><li class="chapter-item expanded "><a href="module-05/index.html"><strong aria-hidden="true">6.</strong> 查询语法</a></li><li class="chapter-item expanded "><a href="module-06/index.html"><strong aria-hidden="true">7.</strong> CnosDB函数</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -666,6 +666,14 @@ SELECT_clause [INTO_clause] FROM_clause [WHERE_clause] GROUP BY *[,time(time_int
 <h4 id="示例-8"><a class="header" href="#示例-8">示例</a></h4>
 <pre><code class="language-sql">select sum(max) from (select MAX(temperature) from air group by station)
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cnosdb函数"><a class="header" href="#cnosdb函数">CnosDB函数</a></h1>
+<h2 id="摘要-2"><a class="header" href="#摘要-2">摘要</a></h2>
+<p>本次分享CnosDB中函数的使用，揭秘时序数据库都在使用哪些函数进行查询。</p>
+<p><a href="module-06/">聚合函数</a>
+<a href="module-06/">选择函数</a>
+<a href="module-06/">转换函数</a>
+<a href="module-06/">分析函数</a>
+<a href="module-06/">预测函数</a></p>
 
                     </main>
 

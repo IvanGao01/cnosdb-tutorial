@@ -1,69 +1,145 @@
 # CnosDB函数
 
-## 聚合函数
-```shell
-COUNT()
-DISTINCT()
-INTEGRAL()
-MEAN()
-MEDIAN()
-MODE()
-SPREAD()
-STDDEV()
-SUM()
-```
-## 选择函数
-```shell
-BOTTOM()
-FIRST()
-LAST()
-MAX()
-MIN()
-PERCENTILE()
-SAMPLE()
-TOP()
-```
-## 转换函数
-```shell
-ABS()
-ACOS()
-ASIN()
-ATAN()
-ATAN2()
-CEIL()
-COS()
-CUMULATIVE_SUM()
-DERIVATIVE()
-DIFFERENCE()
-ELAPSED()
-EXP()
-FLOOR()
-HISTOGRAM()
-LN()
-LOG()
-LOG2()
-LOG10()
-MOVING_AVERAGE()
-NON_NEGATIVE_DERIVATIVE()
-NON_NEGATIVE_DIFFERENCE()
-POW()
-ROUND()
-SIN()
-SQRT()
-TAN()
-```
-## 预测函数
-```shell
-HOLT_WINTERS()
-```
-## 分析函数
-```shell
-CHANDE_MOMENTUM_OSCILLATOR()
-EXPONENTIAL_MOVING_AVERAGE()
-DOUBLE_EXPONENTIAL_MOVING_AVERAGE()
-KAUFMANS_EFFICIENCY_RATIO()
-KAUFMANS_ADAPTIVE_MOVING_AVERAGE()
-TRIPLE_EXPONENTIAL_MOVING_AVERAGE()
-TRIPLE_EXPONENTIAL_DERIVATIVE()
-RELATIVE_STRENGTH_INDEX()
-```
+## 摘要
+
+本次分享CnosDB中函数的使用，揭秘时序数据库都在使用哪些函数进行查询。
+
+[聚合函数]()
+[选择函数]()
+[转换函数]()
+[分析函数]()
+[预测函数]()
+
+[//]: # (## 聚合函数)
+
+[//]: # (```shell)
+
+[//]: # (COUNT&#40;&#41;)
+
+[//]: # (DISTINCT&#40;&#41;)
+
+[//]: # (INTEGRAL&#40;&#41;)
+
+[//]: # (MEAN&#40;&#41;)
+
+[//]: # (MEDIAN&#40;&#41;)
+
+[//]: # (MODE&#40;&#41;)
+
+[//]: # (SPREAD&#40;&#41;)
+
+[//]: # (STDDEV&#40;&#41;)
+
+[//]: # (SUM&#40;&#41;)
+
+[//]: # (```)
+
+[//]: # (## 选择函数)
+
+[//]: # (```shell)
+
+[//]: # (BOTTOM&#40;&#41;)
+
+[//]: # (FIRST&#40;&#41;)
+
+[//]: # (LAST&#40;&#41;)
+
+[//]: # (MAX&#40;&#41;)
+
+[//]: # (MIN&#40;&#41;)
+
+[//]: # (PERCENTILE&#40;&#41;)
+
+[//]: # (SAMPLE&#40;&#41;)
+
+[//]: # (TOP&#40;&#41;)
+
+[//]: # (```)
+
+[//]: # (## 转换函数)
+
+[//]: # (```shell)
+
+[//]: # (ABS&#40;&#41;)
+
+[//]: # (ACOS&#40;&#41;)
+
+[//]: # (ASIN&#40;&#41;)
+
+[//]: # (ATAN&#40;&#41;)
+
+[//]: # (ATAN2&#40;&#41;)
+
+[//]: # (CEIL&#40;&#41;)
+
+[//]: # (COS&#40;&#41;)
+
+[//]: # (CUMULATIVE_SUM&#40;&#41;)
+
+[//]: # (DERIVATIVE&#40;&#41;)
+
+[//]: # (DIFFERENCE&#40;&#41;)
+
+[//]: # (ELAPSED&#40;&#41;)
+
+[//]: # (EXP&#40;&#41;)
+
+[//]: # (FLOOR&#40;&#41;)
+
+[//]: # (HISTOGRAM&#40;&#41;)
+
+[//]: # (LN&#40;&#41;)
+
+[//]: # (LOG&#40;&#41;)
+
+[//]: # (LOG2&#40;&#41;)
+
+[//]: # (LOG10&#40;&#41;)
+
+[//]: # (MOVING_AVERAGE&#40;&#41;)
+
+[//]: # (NON_NEGATIVE_DERIVATIVE&#40;&#41;)
+
+[//]: # (NON_NEGATIVE_DIFFERENCE&#40;&#41;)
+
+[//]: # (POW&#40;&#41;)
+
+[//]: # (ROUND&#40;&#41;)
+
+[//]: # (SIN&#40;&#41;)
+
+[//]: # (SQRT&#40;&#41;)
+
+[//]: # (TAN&#40;&#41;)
+
+[//]: # (```)
+
+[//]: # (## 预测函数)
+
+[//]: # (```shell)
+
+[//]: # (HOLT_WINTERS&#40;&#41;)
+
+[//]: # (```)
+
+[//]: # (## 分析函数)
+
+[//]: # (```shell)
+
+[//]: # (CHANDE_MOMENTUM_OSCILLATOR&#40;&#41;)
+
+[//]: # (EXPONENTIAL_MOVING_AVERAGE&#40;&#41;)
+
+[//]: # (DOUBLE_EXPONENTIAL_MOVING_AVERAGE&#40;&#41;)
+
+[//]: # (KAUFMANS_EFFICIENCY_RATIO&#40;&#41;)
+
+[//]: # (KAUFMANS_ADAPTIVE_MOVING_AVERAGE&#40;&#41;)
+
+[//]: # (TRIPLE_EXPONENTIAL_MOVING_AVERAGE&#40;&#41;)
+
+[//]: # (TRIPLE_EXPONENTIAL_DERIVATIVE&#40;&#41;)
+
+[//]: # (RELATIVE_STRENGTH_INDEX&#40;&#41;)
+
+[//]: # (```)

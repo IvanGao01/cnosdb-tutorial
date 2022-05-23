@@ -6,3 +6,4 @@
 - [数据的增删改查](./module-03/index.md)
 - [使用Golang操作CnosDB](./module-04/index.md)
 - [查询语法](./module-05/index.md)
+- [CnosDB函数](./module-06/index.md)
