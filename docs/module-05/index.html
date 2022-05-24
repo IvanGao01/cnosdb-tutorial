@@ -227,7 +227,8 @@ select * from air where station = 'XiaoMaiDao'</p>
 <pre><code class="language-sql">select * into &quot;copy_oceanic_station&quot;.&quot;autogen&quot;.:MEASUREMENT from &quot;oceanic_station&quot;.&quot;autogen&quot;./.*/ group by *
 </code></pre>
 <p>将查询结果写入measurement</p>
-<pre><code class="language-sql">select temperature into XiaoMaiDao_air_temperature from air where station = 'XiaoMaiDao'
+<pre><code class="language-sql">select temperature into Xia
+    oMaiDao_air_temperature from air where station = 'XiaoMaiDao'
 </code></pre>
 <p>将聚合结果写入指定measurement</p>
 <pre><code class="language-sql">select mean(temperature) into &quot;temperature_mean_1h&quot; from air where station = 'XiaoMaiDao' and time &gt;= '2022-03-01T00:00:00Z' and time &lt;= '2022-04-01T00:00:00Z' group by time(1h)

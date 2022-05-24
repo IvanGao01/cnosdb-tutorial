@@ -137,11 +137,52 @@
                         <h1 id="cnosdb函数"><a class="header" href="#cnosdb函数">CnosDB函数</a></h1>
 <h2 id="摘要"><a class="header" href="#摘要">摘要</a></h2>
 <p>本次分享CnosDB中函数的使用，揭秘时序数据库都在使用哪些函数进行查询。</p>
-<p><a href="">聚合函数</a></p>
-<p><a href="">选择函数</a></p>
-<p><a href="">转换函数</a></p>
-<p><a href="">分析函数</a></p>
-<p><a href="">预测函数</a></p>
+<p><a href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0">聚合函数</a></p>
+<p><a href="#%E9%80%89%E6%8B%A9%E5%87%BD%E6%95%B0">选择函数</a></p>
+<p><a href="#%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0">转换函数</a></p>
+<p><a href="#%E5%88%86%E6%9E%90%E5%87%BD%E6%95%B0">分析函数</a></p>
+<p><a href="#%E9%A2%84%E6%B5%8B%E5%87%BD%E6%95%B0">预测函数</a></p>
+<blockquote>
+<p>备注：以下并不是全部的函数，如需查看其他请参考<a href="https://www.cnosdb.com/content/cnosdb/latest/cnosql/cnosql_function.html">CnosDB函数</a></p>
+</blockquote>
+<h2 id="聚合函数"><a class="header" href="#聚合函数">聚合函数</a></h2>
+<pre><code class="language-shell">COUNT() # 计数
+DISTINCT() # 去重
+INTEGRAL() # 返回曲线下的面积
+MEAN() # 均值
+MEDIAN() # 中位数
+MODE() # 返回出现频率最高的值
+SPREAD() # 返回最大和最小值之间的差
+STDDEV() # 求标准差
+SUM() # 求和
+</code></pre>
+<h2 id="选择函数"><a class="header" href="#选择函数">选择函数</a></h2>
+<pre><code class="language-shell">BOTTOM() #返回最小的N个field value
+FIRST() #返回最早的时间戳的field value
+LAST() #返回最新时间戳的field value
+MAX() # 求最大值
+MIN() # 求最小值
+PERCENTILE() #返回第N个百分位数的field value
+SAMPLE() # 返回N个field value的随机样本
+TOP() # 返回最大的N个field value
+</code></pre>
+<h2 id="转换函数"><a class="header" href="#转换函数">转换函数</a></h2>
+<pre><code class="language-shell">ABS() 返回field value的绝对值
+CUMULATIVE_SUM() # 返回field value的累积总和。
+DIFFERENCE() # 返回field value之间的差值。
+ELAPSED() # 返回field value的时间戳之间的差值。
+MOVING_AVERAGE() # 返回field value窗口的滚动平均值。
+NON_NEGATIVE_DERIVATIVE() # 返回field value之间的非负变化率。
+POW() # 返回field value的x次方。
+ROUND() # 返回指定值的四舍五入后的整数。
+SQRT() # 求平方根
+</code></pre>
+<h2 id="分析函数"><a class="header" href="#分析函数">分析函数</a></h2>
+<pre><code class="language-shell">EXPONENTIAL_MOVING_AVERAGE() #指数加权移动平均值
+</code></pre>
+<h2 id="预测函数"><a class="header" href="#预测函数">预测函数</a></h2>
+<pre><code class="language-shell">HOLT_WINTERS() # 返回N个预测的field value。
+</code></pre>
 
                     </main>
 

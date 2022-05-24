@@ -148,7 +148,8 @@ select * into "copy_oceanic_station"."autogen".:MEASUREMENT from "oceanic_statio
 
 将查询结果写入measurement
 ```sql
-select temperature into XiaoMaiDao_air_temperature from air where station = 'XiaoMaiDao'
+select temperature into Xia
+    oMaiDao_air_temperature from air where station = 'XiaoMaiDao'
 ```
 
 将聚合结果写入指定measurement
