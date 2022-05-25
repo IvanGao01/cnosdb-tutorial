@@ -695,7 +695,6 @@ FIRST() #返回最早的时间戳的field value
 LAST() #返回最新时间戳的field value
 MAX() # 求最大值
 MIN() # 求最小值
-PERCENTILE() #返回第N个百分位数的field value
 SAMPLE() # 返回N个field value的随机样本
 TOP() # 返回最大的N个field value
 </code></pre>
@@ -704,17 +703,19 @@ TOP() # 返回最大的N个field value
 CUMULATIVE_SUM() # 返回field value的累积总和。
 DIFFERENCE() # 返回field value之间的差值。
 ELAPSED() # 返回field value的时间戳之间的差值。
-MOVING_AVERAGE() # 返回field value窗口的滚动平均值。
-NON_NEGATIVE_DERIVATIVE() # 返回field value之间的非负变化率。
 POW() # 返回field value的x次方。
 ROUND() # 返回指定值的四舍五入后的整数。
 SQRT() # 求平方根
 </code></pre>
 <h2 id="分析函数"><a class="header" href="#分析函数">分析函数</a></h2>
-<pre><code class="language-shell">EXPONENTIAL_MOVING_AVERAGE() #指数加权移动平均值
+<pre><code class="language-sql">EXPONENTIAL_MOVING_AVERAGE() #指数加权移动平均值
+
+SELECT EXPONENTIAL_MOVING_AVERAGE(temperature, 2) from air limit 10
 </code></pre>
 <h2 id="预测函数"><a class="header" href="#预测函数">预测函数</a></h2>
-<pre><code class="language-shell">HOLT_WINTERS() # 返回N个预测的field value。
+<pre><code class="language-sql">HOLT_WINTERS() # 返回N个预测的field value。
+
+select holt_winters(mean(temperature),3,3) from air where time &gt; '2022-01-14T16:00:00Z' and time &lt; '2022-01-14T17:00:00Z' group by time(6m)
 </code></pre>
 
                     </main>
