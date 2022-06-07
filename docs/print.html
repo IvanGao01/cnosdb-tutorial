@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li><li class="chapter-item expanded "><a href="module-04/index.html"><strong aria-hidden="true">5.</strong> 使用Golang操作CnosDB</a></li><li class="chapter-item expanded "><a href="module-05/index.html"><strong aria-hidden="true">6.</strong> 查询语法</a></li><li class="chapter-item expanded "><a href="module-06/index.html"><strong aria-hidden="true">7.</strong> CnosDB函数</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li><li class="chapter-item expanded "><a href="module-04/index.html"><strong aria-hidden="true">5.</strong> 使用Golang操作CnosDB</a></li><li class="chapter-item expanded "><a href="module-05/index.html"><strong aria-hidden="true">6.</strong> 查询语法</a></li><li class="chapter-item expanded "><a href="module-06/index.html"><strong aria-hidden="true">7.</strong> CnosDB函数</a></li><li class="chapter-item expanded "><a href="module-07/index.html"><strong aria-hidden="true">8.</strong> 备份还原和下采样</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -717,6 +717,115 @@ SELECT EXPONENTIAL_MOVING_AVERAGE(temperature, 2) from air limit 10
 
 select holt_winters(mean(temperature),3,3) from air where time &gt; '2022-01-14T16:00:00Z' and time &lt; '2022-01-14T17:00:00Z' group by time(6m)
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="备份还原和下采样"><a class="header" href="#备份还原和下采样">备份还原和下采样</a></h1>
+<h2 id="摘要-3"><a class="header" href="#摘要-3">摘要</a></h2>
+<p>本次分享CnosDB的数据备份还原功能和数据下采样</p>
+<ul>
+<li>导入导出</li>
+<li>备份还原</li>
+<li>连续查询</li>
+</ul>
+<h2 id="导入导出"><a class="header" href="#导入导出">导入导出</a></h2>
+<h3 id="导出"><a class="header" href="#导出">导出</a></h3>
+<pre><code class="language-shell">Exports TSM files into CnosDB line protocol format.
+
+Usage:
+  cnosdb-inspect export [flags]
+
+Examples:
+aaa
+
+
+Flags:
+      --compress          Compress the output
+      --database string   Optional: the database to export
+      --datadir string    Data storage path (default &quot;~/.cnosdb/data&quot;)
+      --end string        Optional: the end time to export (RFC3339 format)
+  -h, --help              help for export
+      --out string        Destination file to export to (default &quot;~/.cnosdb/export&quot;)
+      --rp string         Optional: the retention policy to export (requires -database)
+      --start string      Optional: the start time to export (RFC3339 format)
+      --waldir string     WAL storage path (default &quot;~/.cnosdb/wal&quot;)
+</code></pre>
+<h4 id="示例-9"><a class="header" href="#示例-9">示例</a></h4>
+<pre><code class="language-shell">cnosdb-inspect export --compress --database oceanic_station --datadir ~/.cnosdb --rp autogen --out oceanic_station.zip
+</code></pre>
+<h3 id="导入"><a class="header" href="#导入">导入</a></h3>
+<pre><code class="language-shell">Import a previous database export from file.
+
+Usage:
+  cnosdb-cli import [path] [Use] [flags]
+
+Examples:
+Import a previous database export from file. [Example]
+
+Flags:
+      --compressed           set to true if the import file is compressed
+      --consistency string   Set write consistency level: any, one, quorum, or all. (default &quot;all&quot;)
+  -h, --help                 help for import
+      --host string          Host of the CnosDB instance to connect to. (default &quot;localhost&quot;)
+  -p, --password string      Password to login to the server. If password is not given, it's the same as using (--password=&quot;&quot;).
+      --path string          Path to the file to import.
+      --port int             Port of the CnosDB instance to connect to. (default 8086)
+      --pps int              How many points per second the import will allow.  By default it is zero and will not throttle importing.
+      --precision string     Precision specifies the format of the timestamp:  rfc3339,h,m,s,ms,u or ns. (default &quot;ns&quot;)
+      --ssl                  Use https for connecting to cluster.
+  -u, --username string      Username to login to the server.
+</code></pre>
+<pre><code class="language-shell">cnosdb-cli --compressed --consistency all --host localhost --port 8086 --precision s --path 
+</code></pre>
+<h2 id="备份还原"><a class="header" href="#备份还原">备份还原</a></h2>
+<h3 id="备份"><a class="header" href="#备份">备份</a></h3>
+<pre><code class="language-shell">➜  ~ cnosdb backup --help
+Creates a backup copy of specified CnosDB database(s) and saves the files to PATH (directory where backups are saved).
+
+Usage:
+  cnosdb backup [flags] PATH
+
+Examples:
+  cnosdb backup --start 2021-10-10T12:12:00Z
+
+Flags:
+      --database string
+      --db string
+      --end string
+  -h, --help               help for backup
+      --host string         (default &quot;localhost:8088&quot;)
+      --portable
+      --retention string
+      --rp string
+      --shard string
+      --since string
+      --skip-errors
+      --start string
+</code></pre>
+<h3 id="还原"><a class="header" href="#还原">还原</a></h3>
+<pre><code class="language-shell">➜  ~ cnosdb restore --help
+Uses backup copies from the specified PATH to restore databases or specific shards from CnosDB to an CnosDB instance.
+
+Usage:
+  cnosdb restore [flags] PATH
+
+Examples:
+  cnosdb restore
+
+Flags:
+      --database string
+      --datadir string
+      --db string
+  -h, --help               help for restore
+      --host string         (default &quot;localhost:8088&quot;)
+      --metadir string
+      --newdb string
+      --newrp string
+      --online
+      --portable
+      --retention string
+      --rp string
+      --shard uint
+</code></pre>
+<h2 id="连续查询"><a class="header" href="#连续查询">连续查询</a></h2>
+<p>https://www.cnosdb.com/content/cnosdb/latest/cnosql/continuous_queries.html</p>
 
                     </main>
 
