@@ -165,10 +165,10 @@ Flags:
       --waldir string     WAL storage path (default &quot;~/.cnosdb/wal&quot;)
 </code></pre>
 <h4 id="示例"><a class="header" href="#示例">示例</a></h4>
-<pre><code class="language-shell">cnosdb-inspect export --compress --database oceanic_station --datadir ~/.cnosdb --rp autogen --out oceanic_station.zip
+<pre><code class="language-shell">cnosdb-inspect export --compress --database oceanic_station  --datadir ~/.cnosdb/data --out oceanic_station.zip
 </code></pre>
 <h3 id="导入"><a class="header" href="#导入">导入</a></h3>
-<pre><code class="language-shell">Import a previous database export from file.
+<pre><code class="language-shell">Import a previous database export from file. [Long]
 
 Usage:
   cnosdb-cli import [path] [Use] [flags]
@@ -189,7 +189,7 @@ Flags:
       --ssl                  Use https for connecting to cluster.
   -u, --username string      Username to login to the server.
 </code></pre>
-<pre><code class="language-shell">cnosdb-cli --compressed --consistency all --host localhost --port 8086 --precision s --path 
+<pre><code class="language-shell">cnosdb-cli import --compressed --consistency all --host localhost --port 8086 --precision s --path oceanic_station.zip
 </code></pre>
 <h2 id="备份还原"><a class="header" href="#备份还原">备份还原</a></h2>
 <h3 id="备份"><a class="header" href="#备份">备份</a></h3>
@@ -216,9 +216,24 @@ Flags:
       --skip-errors
       --start string
 </code></pre>
+<h4 id="示例-1"><a class="header" href="#示例-1">示例</a></h4>
+<ol>
+<li>备份全部数据</li>
+</ol>
+<pre><code class="language-shell">cnosdb backup --portable ./backup
+</code></pre>
+<ol start="2">
+<li>备份指定数据库</li>
+</ol>
+<pre><code class="language-shell">cnosdb backup --portable --db oceanic_station ./backup_oceanic_station
+</code></pre>
+<ol start="3">
+<li>备份指定时间范围内的数据</li>
+</ol>
+<pre><code class="language-shell">cnosdb backup --portable --start 2022-03-28T00:00:00Z --end 2022-03-28T00:00:00Z ./backup_oceanic_station_part
+</code></pre>
 <h3 id="还原"><a class="header" href="#还原">还原</a></h3>
-<pre><code class="language-shell">➜  ~ cnosdb restore --help
-Uses backup copies from the specified PATH to restore databases or specific shards from CnosDB to an CnosDB instance.
+<pre><code class="language-shell">Uses backup copies from the specified PATH to restore databases or specific shards from CnosDB to an CnosDB instance.
 
 Usage:
   cnosdb restore [flags] PATH
@@ -240,6 +255,19 @@ Flags:
       --retention string
       --rp string
       --shard uint
+</code></pre>
+<h4 id="示例-2"><a class="header" href="#示例-2">示例</a></h4>
+<ol>
+<li>还原到临时数据库</li>
+</ol>
+<pre><code class="language-shell">cnosdb restore --portable --db oceanic_station --newdb oceanic_station_new --host localhost:8088 ./backup
+</code></pre>
+<ol start="2">
+<li>将数据写入到原有目标数据库，并删除临时数据库</li>
+</ol>
+<pre><code class="language-shell">SELECT * INTO oceanic_station..:MEASUREMENT FROM /.*/ GROUP BY *
+
+DROP DATABASE oceanic_station_new
 </code></pre>
 <h2 id="连续查询"><a class="header" href="#连续查询">连续查询</a></h2>
 <p>https://www.cnosdb.com/content/cnosdb/latest/cnosql/continuous_queries.html</p>

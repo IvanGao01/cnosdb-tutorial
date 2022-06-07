@@ -37,13 +37,16 @@ Flags:
 #### 示例
 
 ```shell
-cnosdb-inspect export --compress --database oceanic_station --datadir ~/.cnosdb --rp autogen --out oceanic_station.zip
+cnosdb-inspect export --compress --database oceanic_station  --datadir ~/.cnosdb/data --out oceanic_station.zip
 ```
+
+
+
 
 ### 导入
 
 ```shell
-Import a previous database export from file.
+Import a previous database export from file. [Long]
 
 Usage:
   cnosdb-cli import [path] [Use] [flags]
@@ -66,7 +69,7 @@ Flags:
 ```
 
 ```shell
-cnosdb-cli --compressed --consistency all --host localhost --port 8086 --precision s --path 
+cnosdb-cli import --compressed --consistency all --host localhost --port 8086 --precision s --path oceanic_station.zip
 ```
 
 ## 备份还原
@@ -97,11 +100,27 @@ Flags:
       --start string
 ```
 
+#### 示例
+
+
+1. 备份全部数据
+```shell
+cnosdb backup --portable ./backup
+```
+
+2. 备份指定数据库
+```shell
+cnosdb backup --portable --db oceanic_station ./backup_oceanic_station
+```
+
+3. 备份指定时间范围内的数据
+```shell
+cnosdb backup --portable --start 2022-03-28T00:00:00Z --end 2022-03-28T00:00:00Z ./backup_oceanic_station_part
+```
 
 ### 还原
 
 ```shell
-➜  ~ cnosdb restore --help
 Uses backup copies from the specified PATH to restore databases or specific shards from CnosDB to an CnosDB instance.
 
 Usage:
@@ -125,6 +144,19 @@ Flags:
       --rp string
       --shard uint
 ```
+#### 示例
+
+1. 还原到临时数据库
+```shell
+cnosdb restore --portable --db oceanic_station --newdb oceanic_station_new --host localhost:8088 ./backup
+```
+2. 将数据写入到原有目标数据库，并删除临时数据库
+```shell
+SELECT * INTO oceanic_station..:MEASUREMENT FROM /.*/ GROUP BY *
+
+DROP DATABASE oceanic_station_new
+```
+
 
 ## 连续查询
 
