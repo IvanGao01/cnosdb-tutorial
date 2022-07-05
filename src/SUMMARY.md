@@ -8,3 +8,4 @@
 - [查询语法](./module-05/index.md)
 - [CnosDB函数](./module-06/index.md)
 - [备份还原和下采样](./module-07/index.md)
+- [CnosDB最佳实践](./module-09/index.md)

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>使用Golang操作CnosDB - CnosDB Tutorial</title>
+        <title>CnosDB最佳实践 - CnosDB Tutorial</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="../module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="../module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="../module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li><li class="chapter-item expanded "><a href="../module-04/index.html" class="active"><strong aria-hidden="true">5.</strong> 使用Golang操作CnosDB</a></li><li class="chapter-item expanded "><a href="../module-05/index.html"><strong aria-hidden="true">6.</strong> 查询语法</a></li><li class="chapter-item expanded "><a href="../module-06/index.html"><strong aria-hidden="true">7.</strong> CnosDB函数</a></li><li class="chapter-item expanded "><a href="../module-07/index.html"><strong aria-hidden="true">8.</strong> 备份还原和下采样</a></li><li class="chapter-item expanded "><a href="../module-09/index.html"><strong aria-hidden="true">9.</strong> CnosDB最佳实践</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> 前置技能</a></li><li class="chapter-item expanded "><a href="../module-01/index.html"><strong aria-hidden="true">2.</strong> CnosDB入门</a></li><li class="chapter-item expanded "><a href="../module-02/index.html"><strong aria-hidden="true">3.</strong> CnosDB数据库管理</a></li><li class="chapter-item expanded "><a href="../module-03/index.html"><strong aria-hidden="true">4.</strong> 数据的增删改查</a></li><li class="chapter-item expanded "><a href="../module-04/index.html"><strong aria-hidden="true">5.</strong> 使用Golang操作CnosDB</a></li><li class="chapter-item expanded "><a href="../module-05/index.html"><strong aria-hidden="true">6.</strong> 查询语法</a></li><li class="chapter-item expanded "><a href="../module-06/index.html"><strong aria-hidden="true">7.</strong> CnosDB函数</a></li><li class="chapter-item expanded "><a href="../module-07/index.html"><strong aria-hidden="true">8.</strong> 备份还原和下采样</a></li><li class="chapter-item expanded "><a href="../module-09/index.html" class="active"><strong aria-hidden="true">9.</strong> CnosDB最佳实践</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,156 +134,17 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="使用golang操作cnosdb"><a class="header" href="#使用golang操作cnosdb">使用Golang操作CnosDB</a></h1>
-<h2 id="摘要"><a class="header" href="#摘要">摘要</a></h2>
-<ul>
-<li>学习使用CnosDB Golang SDK 操作CnosDB</li>
-</ul>
-<h2 id="使用ping查看cnosdb状态"><a class="header" href="#使用ping查看cnosdb状态">使用/ping查看cnosdb状态</a></h2>
-<pre><code class="language-go">func ExampleClient_Ping() {
-
-	c, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: &quot;http://localhost:8086&quot;,
-	})
-	if err != nil {
-		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
-	}
-	defer c.Close()
-
-	_, rs, err := c.Ping(0)
-	fmt.Println(&quot;version:&quot;, rs)
-	if err != nil {
-		fmt.Println(&quot;Error pinging CnosDB: &quot;, err.Error())
-	}
-}
-</code></pre>
-<h2 id="使用http-client写入一个point"><a class="header" href="#使用http-client写入一个point">使用http client写入一个point</a></h2>
-<pre><code class="language-go">func ExampleClient_write() {
-	// Make client
-	c, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: &quot;http://localhost:8086&quot;,
-	})
-	if err != nil {
-		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
-	}
-	defer c.Close()
-
-	// Create a new point batch
-	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
-		Database:  &quot;oceanic_station&quot;,
-		Precision: &quot;s&quot;,
-	})
-
-	// Create a point and add to batch
-	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
-	fields := map[string]interface{}{
-		&quot;temperature&quot;: 67,
-		&quot;visibility&quot;:  58,
-	}
-	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
-	if err != nil {
-		fmt.Println(&quot;Error: &quot;, err.Error())
-	}
-	bp.AddPoint(pt)
-
-	// Write the batch
-	c.Write(bp)
-}
-</code></pre>
-<h2 id="创建一个batchpoint并添加一个point"><a class="header" href="#创建一个batchpoint并添加一个point">创建一个BatchPoint，并添加一个Point</a></h2>
-<pre><code class="language-go">func ExampleBatchPoints() {
-	// Create a new point batch
-	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
-		Database:  &quot;oceanic_station&quot;,
-		Precision: &quot;s&quot;,
-	})
-
-	// Create a point and add to batch
-	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
-	fields := map[string]interface{}{
-		&quot;temperature&quot;: 67,
-		&quot;visibility&quot;:  58,
-	}
-	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
-	if err != nil {
-		fmt.Println(&quot;Error: &quot;, err.Error())
-	}
-	bp.AddPoint(pt)
-}
-</code></pre>
-<h2 id="使用batchpoint的setter方法"><a class="header" href="#使用batchpoint的setter方法">使用BatchPoint的setter方法</a></h2>
-<pre><code class="language-go">func ExampleBatchPoints_setters() {
-	// Create a new point batch
-	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{})
-	bp.SetDatabase(&quot;oceanic_station&quot;)
-	bp.SetPrecision(&quot;ms&quot;)
-
-	// Create a point and add to batch
-	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
-	fields := map[string]interface{}{
-		&quot;temperature&quot;: 67,
-		&quot;visibility&quot;:  58,
-	}
-	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
-	if err != nil {
-		fmt.Println(&quot;Error: &quot;, err.Error())
-	}
-	bp.AddPoint(pt)
-}
-</code></pre>
-<h2 id="创建一个point并设置时间戳"><a class="header" href="#创建一个point并设置时间戳">创建一个point并设置时间戳</a></h2>
-<pre><code class="language-go">func ExamplePoint() {
-	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
-	fields := map[string]interface{}{
-		&quot;temperature&quot;: 67,
-		&quot;visibility&quot;:  58,
-	}
-	pt, err := client.NewPoint(&quot;air&quot;, tags, fields, time.Now())
-	if err == nil {
-		fmt.Println(&quot;We created a point: &quot;, pt.String())
-	}
-}
-</code></pre>
-<h2 id="创建一个没有时间戳的point"><a class="header" href="#创建一个没有时间戳的point">创建一个没有时间戳的point</a></h2>
-<pre><code class="language-go">func ExamplePoint_withoutTime() {
-	tags := map[string]string{&quot;station&quot;: &quot;XiaoMaiDao&quot;}
-	fields := map[string]interface{}{
-		&quot;temperature&quot;: 67,
-		&quot;visibility&quot;:  58,
-	}
-	pt, err := client.NewPoint(&quot;air&quot;, tags, fields)
-	if err == nil {
-		fmt.Println(&quot;We created a point w/o time: &quot;, pt.String())
-	}
-}
-</code></pre>
-<h2 id="创建一个查询请求"><a class="header" href="#创建一个查询请求">创建一个查询请求</a></h2>
-<pre><code class="language-go">func ExampleClient_query() {
-	// Make client
-	c, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: &quot;http://localhost:8086&quot;,
-	})
-	if err != nil {
-		fmt.Println(&quot;Error creating CnosDB Client: &quot;, err.Error())
-	}
-	defer c.Close()
-
-	q := client.NewQuery(&quot;SELECT temperature FROM air limit 10&quot;, &quot;oceanic_station&quot;, &quot;ns&quot;)
-	if response, err := c.Query(q); err == nil &amp;&amp; response.Error() == nil {
-		fmt.Println(response.Results)
-	}
-}
-</code></pre>
+                        <h1 id="cnosdb最佳实践"><a class="header" href="#cnosdb最佳实践">CnosDB最佳实践</a></h1>
+<h2 id="架构设计"><a class="header" href="#架构设计">架构设计</a></h2>
+<h2 id="写入优化"><a class="header" href="#写入优化">写入优化</a></h2>
+<h2 id="存储设置和下采样"><a class="header" href="#存储设置和下采样">存储设置和下采样</a></h2>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../module-03/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../module-07/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
-                            </a>
-                            <a rel="next" href="../module-05/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -291,11 +152,8 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../module-03/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../module-07/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a rel="next" href="../module-05/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
