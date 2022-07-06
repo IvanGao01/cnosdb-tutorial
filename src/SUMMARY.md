@@ -8,4 +8,6 @@
 - [查询语法](./module-05/index.md)
 - [CnosDB函数](./module-06/index.md)
 - [备份还原和下采样](./module-07/index.md)
+- [连续查询](./module-00/index.md))
+- [分布式集群](./module-08/index.md)
 - [CnosDB最佳实践](./module-09/index.md)
